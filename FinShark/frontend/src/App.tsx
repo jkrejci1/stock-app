@@ -37,6 +37,7 @@ import { CompanySearch } from './company';
         //If you hover over result, you can see what the possible types of result could be (axios response returns a promise)
         if (typeof result === "string") { //Notice if we didn't get an array back, then we must've gotten an error, which would be of type string
           //Show the result if error
+          //When we arent connecting to the internet we want them to see that, but NOT when we are that'd be ridiculous
           setServerError(result)
         } else if(Array.isArray(result.data)) { //If we got an array, then it worked, which also means we have the correct type as well for the setSearchResult state so we wouldn't get an error. If we didn't check this we'd get a type error
           setSearchResult(result.data)
@@ -47,9 +48,11 @@ import { CompanySearch } from './company';
     }
 
   //For Search, we pass down the needed functions that handle the data using props so we have any unique data we need passed into the Search.tsx file
+  //{serverError} code is used so that we only show internet connection status if we aren't able to connect. So use && so we only show connected status when there's an error
   return (
     <div className="App">
       <Search onClick={onClick} search={search} handleChange={handleChange} />
+      {serverError && <h1>{serverError}</h1>}
       <CardList />
     </div>
   );
