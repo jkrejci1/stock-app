@@ -1,6 +1,7 @@
 import React, { ChangeEvent, SyntheticEvent } from 'react';
 
 //Need to know the type of data thats gonna be sent down (bring in event handeling functions from app.tsx)
+//Checks that the data being passed down to our <Search /> object is correct
 interface Props {
     //Return void as react is functional, doesn't want outside state being touched
     onClick: (e: SyntheticEvent) => void;

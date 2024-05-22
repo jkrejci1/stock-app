@@ -22,7 +22,7 @@ import { CompanySearch } from './company';
     //The click function for our search
     //any keyword allows anything to go into function, don't use that e: any
     //Need to get the event type (Go down to the e and copy the event type when highlighting over it)
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>)  => {
         setSearch(e.target.value);
         console.log(e);
     };
@@ -47,13 +47,15 @@ import { CompanySearch } from './company';
 
     }
 
+
   //For Search, we pass down the needed functions that handle the data using props so we have any unique data we need passed into the Search.tsx file
   //{serverError} code is used so that we only show internet connection status if we aren't able to connect. So use && so we only show connected status when there's an error
+  //Pass search results to cardlist to create list
   return (
     <div className="App">
       <Search onClick={onClick} search={search} handleChange={handleChange} />
       {serverError && <h1>{serverError}</h1>}
-      <CardList />
+      <CardList searchResults={searchResult}/> 
     </div>
   );
 }

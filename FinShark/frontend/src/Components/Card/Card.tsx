@@ -1,31 +1,29 @@
 //Use tsfrafce snippet to get it started quickly
 
 //We need to import even local images and files and classes etc using common pathing
-import sharkImg from "./shark.jpg";
+import { CompanySearch } from "../../company";
  
 //Do checks on the data to make sure it's correct (The data tha'll be passed for the card)
 interface Props {
-  companyName: string;
-  ticker: string;
-  price: number;
+  id: string;
+  searchResult: CompanySearch;
 }
 
 
 //Practice card (Pass the interface prop data down)
-const Card: React.FC<Props> = ({ companyName, ticker, price }: Props) : JSX.Element => {
+const Card: React.FC<Props> = ({ id, searchResult }: Props) : JSX.Element => {
   //Put variables carrying the data in {}'s in the HTML/React <>'s
   return (
     <div className="card">
         <img
-            src={sharkImg}
-            alt="Image"
+            alt="company logo"
         />
         <div className="details">
-            <h2>{companyName} ({ticker})</h2>
-            <p>${price}</p>
+            <h2>{searchResult.name} ({searchResult.symbol})</h2>
+            <p>{searchResult.currency}</p>
         </div>
-        <p className="Infon">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos quis recusandae at error. Atque, reiciendis et quia incidunt asperiores blanditiis autem eaque, veniam tenetur, quaerat nemo amet soluta adipisci quo?
+        <p className="info">
+            {searchResult.exchangeShortName} - {searchResult.stockExchange}
         </p> 
     </div> 
   )
