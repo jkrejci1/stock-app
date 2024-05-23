@@ -1,6 +1,7 @@
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
 import './App.css';
 import CardList from './Components/CardList/CardList'; //Going to use a card list now to set as all of our cards instead of just one
+import Navbar from './Components/Navbar/Navbar';
 import ListPortfolio from './Components/Portfolio/ListPortfolio/ListPortfolio';
 import Search from './Components/Search/Search';
 import { searchCompanies } from './api';
@@ -82,6 +83,7 @@ import { CompanySearch } from './company';
   return (
     <div className="App">
       {/**<Search onClick={onClick} search={search} handleChange={handleChange} />*/}
+      <Navbar />
       <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange}/>
       <ListPortfolio portfolioValues={portfolioValues} onPortfolioDelete={onPortfolioDelete}/>
       <CardList searchResults={searchResult} onPortfolioCreate={onPortfolioCreate}/> 
