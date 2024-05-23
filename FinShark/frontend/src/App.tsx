@@ -15,6 +15,7 @@ import { CompanySearch } from './company';
     
     //Array for portfolio values
     const [portfolioValues, setPortfolioValues] = useState<string[]>([]); //Array of favorite stocks
+    
     //State to store search results, stores in array
     const [searchResult, setSearchResult] = useState<CompanySearch[]>([])
 
@@ -34,12 +35,22 @@ import { CompanySearch } from './company';
         e.preventDefault();
         const exists = portfolioValues.find((value) => value === e.target[0].value) //Checks to see if we already got something we were going to add in the spread data (which is why we would use index 0)
         if (exists) return; //If the card already exists, stop here and don't add it
-        
+
         //console.log(e) TEST
         //Let's add to array of favorite stocks adds existing value and first value in the event from the form
         //Can't use syntheticEvent property for below stuff in updatePortfo, so we turn off the typescript by putting any as the property above instead of syntheticEvent
         const updatedPortfolio = [...portfolioValues, e.target[0].value]
         setPortfolioValues(updatedPortfolio); //Created the new array state
+    }
+
+    //Turn off the typescript for this one as adding it has it off to so we might have different types
+    const onPortfolioDelete = (e: any) => {
+      e.preventDefault();
+      const removed = portfolioValues.filter((value) => {
+        //We will set removed to a new array where each value that should be added will not be equal to the one we want removed
+        return value !== e.target[0].value; //Check if it's not a part of the actual value we'll get through our e
+      });
+      setPortfolioValues(removed);
     }
 
 
@@ -72,7 +83,7 @@ import { CompanySearch } from './company';
     <div className="App">
       {/**<Search onClick={onClick} search={search} handleChange={handleChange} />*/}
       <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange}/>
-      <ListPortfolio portfolioValues={portfolioValues}/>
+      <ListPortfolio portfolioValues={portfolioValues} onPortfolioDelete={onPortfolioDelete}/>
       <CardList searchResults={searchResult} onPortfolioCreate={onPortfolioCreate}/> 
       {serverError && <h1>{serverError}</h1>}
     </div>
