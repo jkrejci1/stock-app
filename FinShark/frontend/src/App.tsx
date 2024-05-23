@@ -1,6 +1,7 @@
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
 import './App.css';
 import CardList from './Components/CardList/CardList'; //Going to use a card list now to set as all of our cards instead of just one
+import ListPortfolio from './Components/Portfolio/ListPortfolio/ListPortfolio';
 import Search from './Components/Search/Search';
 import { searchCompanies } from './api';
 import { CompanySearch } from './company';
@@ -12,6 +13,8 @@ import { CompanySearch } from './company';
     //The state is stored for current window, but by just doing this, it dissapears after the page is refreshed
     const [search, setSearch] = useState<string>(""); //NEED STATE HERE FOR PROPER DATA PASSING FOR EVENT HANDELING FUNCTIONS BELOW
     
+    //Array for portfolio values
+    const [portfolioValues, setPortfolioValues] = useState<string[]>([]); //Array of favorite stocks
     //State to store search results, stores in array
     const [searchResult, setSearchResult] = useState<CompanySearch[]>([])
 
@@ -26,10 +29,17 @@ import { CompanySearch } from './company';
         setSearch(e.target.value);
     };
 
-    const onPortfolioCreate = (e: SyntheticEvent) => {
+    const onPortfolioCreate = (e: any) => {
         //Add prevent default to stop a refresh from happening
         e.preventDefault();
-        console.log(e)
+        const exists = portfolioValues.find((value) => value === e.target[0].value) //Checks to see if we already got something we were going to add in the spread data (which is why we would use index 0)
+        if (exists) return; //If the card already exists, stop here and don't add it
+        
+        //console.log(e) TEST
+        //Let's add to array of favorite stocks adds existing value and first value in the event from the form
+        //Can't use syntheticEvent property for below stuff in updatePortfo, so we turn off the typescript by putting any as the property above instead of syntheticEvent
+        const updatedPortfolio = [...portfolioValues, e.target[0].value]
+        setPortfolioValues(updatedPortfolio); //Created the new array state
     }
 
 
@@ -62,6 +72,7 @@ import { CompanySearch } from './company';
     <div className="App">
       {/**<Search onClick={onClick} search={search} handleChange={handleChange} />*/}
       <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange}/>
+      <ListPortfolio portfolioValues={portfolioValues}/>
       <CardList searchResults={searchResult} onPortfolioCreate={onPortfolioCreate}/> 
       {serverError && <h1>{serverError}</h1>}
     </div>
