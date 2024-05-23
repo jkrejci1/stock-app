@@ -22,14 +22,21 @@ import { CompanySearch } from './company';
     //The click function for our search
     //any keyword allows anything to go into function, don't use that e: any
     //Need to get the event type (Go down to the e and copy the event type when highlighting over it)
-    const handleChange = (e: ChangeEvent<HTMLInputElement>)  => {
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
-        console.log(e);
     };
+
+    const onPortfolioCreate = (e: SyntheticEvent) => {
+        //Add prevent default to stop a refresh from happening
+        e.preventDefault();
+        console.log(e)
+    }
 
 
     //Create function for the onClick, or oyu can use syntheticEvent as a check, which is used for auto type checking with events
-    const onClick = async (e: SyntheticEvent) => {
+    const onSearchSubmit = async (e: SyntheticEvent) => {
+        //Prevent a refresh so it doesn't break
+        e.preventDefault();
         //Get the company passing the current search state
         const result = await searchCompanies(search);
 
@@ -53,9 +60,10 @@ import { CompanySearch } from './company';
   //Pass search results to cardlist to create list
   return (
     <div className="App">
-      <Search onClick={onClick} search={search} handleChange={handleChange} />
+      {/**<Search onClick={onClick} search={search} handleChange={handleChange} />*/}
+      <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange}/>
+      <CardList searchResults={searchResult} onPortfolioCreate={onPortfolioCreate}/> 
       {serverError && <h1>{serverError}</h1>}
-      <CardList searchResults={searchResult}/> 
     </div>
   );
 }
