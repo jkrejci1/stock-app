@@ -14,7 +14,18 @@ export const router = createBrowserRouter([
             {path: "", element: <HomePage />},
             {path: "search", element: <SearchPage />},
             //The ticker is the company data from the company name abreviation like aapl or msft (it can be anything though from how it works, that's just how we're gonna use it in this case!)
-            {path: "company/:ticker", element: <CompanyPage />}
+            {
+                //Create route for the Company Page, which also contains routes to company data like company profile and income statement
+                //This creates nested routes used for one specific route, creating routes to other pages inside this one page only! COOL!!
+                //RESUME VIDEO 19 AT 8 MINUTE MARK
+                path: "company/:ticker", 
+                element: <CompanyPage />,
+                children: [
+                    { path: "company-profile", element: <HomePage /> },
+                    { path: "income-statement", element: <HomePage /> }
+                ],
+            },
+        
         ]
     }
 ])
