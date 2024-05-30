@@ -2,6 +2,7 @@
 
 //We need to import even local images and files and classes etc using common pathing
 import { SyntheticEvent } from "react";
+import { Link } from "react-router-dom";
 import { CompanySearch } from "../../company";
 import AddPortfolio from "../Portfolio/AddPortfolio/AddPortfolio";
  
@@ -22,9 +23,10 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) :
       key={id}
       id={id}
     >
-      <h2 className="font-bold text-center text-black md:text-left">
+      {/* Create link for the h2 that also is a link to the stock data so that when we click it we can get it. ${} --> used to pass data to the route (in this case from our API data) */}
+      <Link to={`/company/${searchResult.symbol}`}className="font-bold text-center text-black md:text-left">
         {searchResult.name} ({searchResult.symbol})
-      </h2>
+      </Link>
       <p className="text-black">{searchResult.currency}</p>
       <p className="font-bold text-black">
         {searchResult.exchangeShortName} - {searchResult.stockExchange}

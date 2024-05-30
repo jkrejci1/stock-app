@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import "./Hero.css";
 import hero from "./hero.png";
 
 interface Props {}
 
+//The hero is basically main page data that will display what the website is and the purpose of it which would be suitable on the Home Page
 const Hero = (props: Props) => {
   return (
     <section id="hero">
@@ -16,12 +18,12 @@ const Hero = (props: Props) => {
             news.
           </p>
           <div className="mx-auto lg:mx-0">
-            <a
-              href=""
+            <Link
+              to="/search"
               className="py-5 px-10 text-2xl font-bold text-white bg-lightGreen rounded lg:py-4 hover:opacity-70"
             >
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
         <div className="mb-24 mx-auto md:w-180 md:px-10 lg:mb-0 lg:w-1/2">

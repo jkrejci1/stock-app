@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './Routes/Routes';
 import { searchCompanies } from './api';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -10,9 +11,10 @@ const root = ReactDOM.createRoot(
 );
 
 console.log(searchCompanies("tsla"))
+//Use our routes page as the main access page to our app, so we know where to go
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
