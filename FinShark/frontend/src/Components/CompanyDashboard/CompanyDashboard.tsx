@@ -1,7 +1,11 @@
+import { Outlet } from "react-router-dom";
 
-type Props = {}
+//For childern we need to use react node
+type Props = {
+  children: React.ReactNode;
+}
 
-const CompanyDashboard = (props: Props) => {
+const CompanyDashboard = ({children}: Props) => {
   return (
    <div className="relative md:ml-64 bg-blueGray-100 w-full">
       
@@ -11,121 +15,11 @@ const CompanyDashboard = (props: Props) => {
 
         <div>
 
-          <div className="flex flex-wrap">
-
-            <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-
-              <div className="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-
-                <div className="flex-auto p-4">
-
-                  <div className="flex flex-wrap">
-
-                    <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-
-                      <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-
-                        Traffic
-
-                      </h5>
-
-                      <span className="font-bold text-xl">350,897</span>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-
-              <div className="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-
-                <div className="flex-auto p-4">
-
-                  <div className="flex flex-wrap">
-
-                    <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-
-                      <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-
-                        NEW USERS
-
-                      </h5>
-
-                      <span className="font-bold text-xl">2,356</span>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-
-              <div className="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-
-                <div className="flex-auto p-4">
-
-                  <div className="flex flex-wrap">
-
-                    <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-
-                      <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-
-                        SALES
-
-                      </h5>
-
-                      <span className="font-bold text-xl">924</span>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
-
-              <div className="relative flex flex-col min-w-0 break-words bg-white rounded-lg mb-6 xl:mb-0 shadow-lg">
-
-                <div className="flex-auto p-4">
-
-                  <div className="flex flex-wrap">
-
-                    <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-
-                      <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-
-                        PERFORMANCE
-
-                      </h5>
-
-                      <span className="font-bold text-xl">49,65%</span>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
+          {/* Use outlet to have a rouote so we can get all the income statements and other pages to load */}
+          {/* This is where we'll get the company dashboard pages children, (the other components we want added in this page) */}
+          {/* The tiles aree our children */}
+          <div className="flex flex-wrap">{children}</div>
+          <div className="flex flex-wrap">{<Outlet />}</div>
 
         </div>
 

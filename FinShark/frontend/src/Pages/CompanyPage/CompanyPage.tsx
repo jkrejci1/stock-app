@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import CompanyDashboard from "../../Components/CompanyDashboard/CompanyDashboard";
 import Sidebar from "../../Components/Sidebar/Sidebar";
+import Tile from "../../Components/Tile/Tile";
 import { getCompanyProfile } from "../../api";
 import { CompanyProfile } from "../../company";
 
@@ -27,7 +28,8 @@ const CompanyPage = (props: Props) => {
             {company ? (
                 <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
                     <Sidebar />
-                    <CompanyDashboard />
+                    {/* When we create children components inside our components, we need to add those as well with the parent component as well as sending data we made need */}
+                    <CompanyDashboard><Tile title="Company Name" subTitle={company.companyName}></Tile></CompanyDashboard>
                 </div>
             ) : (
                 <div>Company not found</div>
