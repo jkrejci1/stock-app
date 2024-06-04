@@ -28,7 +28,7 @@ const CompanyPage = (props: Props) => {
             {company ? (
                 <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden">
                     <Sidebar />
-                    {/* When we create children components inside our components, we need to add those as well with the parent component as well as sending data we made need */}
+                    {/* When we create children components inside our components, we need to add those as well with the parent component as well as sending data we made need. CONTINUE */}
                     <CompanyDashboard><Tile title="Company Name" subTitle={company.companyName}></Tile></CompanyDashboard>
                 </div>
             ) : (
