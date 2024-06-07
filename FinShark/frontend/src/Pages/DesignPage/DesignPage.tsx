@@ -2,8 +2,18 @@
 
 import RatioList from "../../Components/RatioList/RatioList"
 import Table from "../../Components/Table/Table"
+import { testIncomeStatementData } from "../../Components/Table/testData"
 
 type Props = {}
+
+//Dummy data for test
+const tableConfig = [
+  {
+    label: "Market Cap",
+    render: (company: any) => company.marketCapTTM,
+    subTitle: "Total value of all a company's shares of stock",
+  },
+]
 
 const DesignPage = (props: Props) => {
   return (
@@ -13,7 +23,8 @@ const DesignPage = (props: Props) => {
         various design aspects of the application.
     </h2>
     {/* Bring in the ratio list for displaying certain company data */}
-    <RatioList />
+    {/* Also pass down the data to it */}
+    <RatioList data={testIncomeStatementData} config={tableConfig} />
     {/* Table that we'll use for all data */}
     <Table />
     </>

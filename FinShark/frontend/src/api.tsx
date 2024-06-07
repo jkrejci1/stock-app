@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CompanyProfile, CompanySearch } from "./company";
+import { CompanyKeyMetrics, CompanyProfile, CompanySearch } from "./company";
 
 //We need to create to wrap around to correctly make our axios call
 //Gonna be an array
@@ -30,6 +30,18 @@ export const getCompanyProfile = async (query: string) => {
     try {
         const data = await axios.get<CompanyProfile[]>(
             `https://financialmodelingprep.com/api/v3/profile/${query}?apikey=${process.env.REACT_APP_API_KEY}`
+        )
+        return data
+    } catch (error: any) {
+        console.log("error message from API: ", error.message)
+    }
+}
+
+//Function that will get company data from the company profile for the key metrics
+export const getKeyMetrics = async (query: string) => {
+    try {
+        const data = await axios.get<CompanyKeyMetrics[]>(
+            `https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?apikey=${process.env.REACT_APP_API_KEY}`
         )
         return data
     } catch (error: any) {

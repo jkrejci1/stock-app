@@ -1,12 +1,19 @@
 //Ratio List display for our table data
-import { TestDataCompany } from '../Table/testData'
 
-type Props = {}
+//Pass down the data from API
+type Props = {
+    config: any;
+    data: any;
+}
 
-//Bring in test data
-const data = TestDataCompany[0]
 
-//Give a type to the test data
+
+
+//Bring in test data FOR THE DUMMY TEST DATA
+//const data = TestDataCompany[0]
+
+//Give a type to the test data THIS IS DUMMY TEST DATA
+/** 
 type Company = typeof data
 
 const config = [
@@ -21,10 +28,15 @@ const config = [
         subTitle: "This is the company name.",
     },
 ]
-const RatioList = (props: Props) => {
+*/
+
+
+
+
+const RatioList = ({ config, data } : Props) => {
 
     //Render each cell row
-    const renderedRows = config.map((row) => {
+    const renderedRows = config.map((row: any) => {
         return (
             <li className="py-3 sm:py-4">
                 <div className="flex items-center space-x-4">
@@ -47,7 +59,7 @@ const RatioList = (props: Props) => {
   return (
 
     //Now use the return statement to render everything from the function
-    <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
+    <div className="bg-white shadow rounded-lg ml-4  mt-4 mb-4 p-4 sm:p-6 h-full">
         {/* Tailwind to make our table */}
         <ul className="divide-y divided-gray-200">{renderedRows}</ul>
     </div>
