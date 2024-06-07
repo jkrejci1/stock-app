@@ -8,6 +8,8 @@ type Props = {}
 //Let's type it
 type Company = (typeof data)[0];
 
+console.log("Company type: ", data[0])
+
 //Need to create a config object for our table to help keep it DRY
 const configs = [
     {
