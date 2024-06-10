@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CompanyKeyMetrics, CompanyProfile, CompanySearch } from "./company";
+import { CompanyIncomeStatement, CompanyKeyMetrics, CompanyProfile, CompanySearch } from "./company";
 
 //We need to create to wrap around to correctly make our axios call
 //Gonna be an array
@@ -42,6 +42,18 @@ export const getKeyMetrics = async (query: string) => {
     try {
         const data = await axios.get<CompanyKeyMetrics[]>(
             `https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?apikey=${process.env.REACT_APP_API_KEY}`
+        )
+        return data
+    } catch (error: any) {
+        console.log("error message from API: ", error.message)
+    }
+}
+
+//Function that will get the income statement data that we need, limit 40 to prevent too much data IF DOESNT WORK TRY LOWER L
+export const getIncomeStatement = async (query: string) => {
+    try {
+        const data = await axios.get<CompanyIncomeStatement[]>(
+            `https://financialmodelingprep.com/api/v3/income-statement/${query}?Limit=40&apikey=${process.env.REACT_APP_API_KEY}`
         )
         return data
     } catch (error: any) {

@@ -26,7 +26,7 @@ const DesignGuide = (props: Props) => {
     {/* Also pass down the data to it */}
     <RatioList data={testIncomeStatementData} config={tableConfig} />
     {/* Table that we'll use for all data */}
-    <Table />
+    <Table data={testIncomeStatementData} config={tableConfig} />
     </>
   )
 }
