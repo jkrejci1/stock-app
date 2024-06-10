@@ -49,7 +49,7 @@ export const getKeyMetrics = async (query: string) => {
     }
 }
 
-//Function that will get the income statement data that we need, limit 40 to prevent too much data IF DOESNT WORK TRY LOWER L
+//Function that will get the income statement data that we need, limit 40 to prevent too much data
 export const getIncomeStatement = async (query: string) => {
     try {
         const data = await axios.get<CompanyIncomeStatement[]>(
