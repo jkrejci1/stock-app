@@ -64,6 +64,7 @@ export const getIncomeStatement = async (query: string) => {
 //Function that will get the balance sheet data that we need, limit 40 to prevent too much data; query == our ticker we passed
 export const getBalanceSheet = async (query: string) => {
     try {
+        //Gets api data that is in an object when we do this call and put into data --> all of the types in our company.d.ts should be what all of the data is, but you can check it by console logging the data and it should match. They both might be in different orders though, but they don't need to be in the same exact order so it's fine.
         const data = await axios.get<CompanyBalanceSheet[]>(
             `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${query}?Limit=40&apikey=${process.env.REACT_APP_API_KEY}`
         )

@@ -147,6 +147,9 @@ export interface CompanySearch {
     finalLink: string;
   }
   
+  //These are types for everything that would be in the object for this requested data from our api, when it's logged in console log the order is just different, but it's all still there.
+  //We need to go through all the data in our object and give it a type for typescript
+  //This is simply just the typing of the data the actual data is what is pulled straight from the API in api.tsx, this file is just for giving all of that data in the data = axios.get<CurrentType> a type for all of the data in said object.
   export interface CompanyBalanceSheet {
     date: string;
     symbol: string;
