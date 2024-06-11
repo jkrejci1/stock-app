@@ -1,4 +1,4 @@
-import { FaHome } from "react-icons/fa"
+import { FaHome } from "react-icons/fa"; //This will give us a home icon in the shape of a house for our sidebar
 import { Link } from "react-router-dom"
 
 
@@ -34,6 +34,14 @@ const Sidebar = (props: Props) => {
                         >   
                             <FaHome />
                             <h6 className="ml-3">Income Statement</h6>
+                        
+                        </Link>
+                        <Link 
+                            to="balance-sheet" 
+                            className="flex md:min-w-full text-blueGray-500 text-medium uppercase font-bold block pt--1 pb-4 no-underline"
+                        >   
+                            <FaHome />
+                            <h6 className="ml-3">Balance Sheet</h6>
                         
                         </Link>
                       </div>

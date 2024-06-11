@@ -26,7 +26,8 @@ export const router = createBrowserRouter([
                 element: <CompanyPage />,
                 children: [
                     { path: "company-profile", element: <CompanyProfile /> },
-                    { path: "income-statement", element: <IncomeStatement /> }
+                    { path: "income-statement", element: <IncomeStatement /> },
+                    { path: "balance-sheet", element: <BalanceSheet /> }
                 ],
             },
         
