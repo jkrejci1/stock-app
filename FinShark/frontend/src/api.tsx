@@ -61,7 +61,7 @@ export const getIncomeStatement = async (query: string) => {
     }
 }
 
-//Function that will get the balance sheet data that we need, limit 40 to prevent too much data
+//Function that will get the balance sheet data that we need, limit 40 to prevent too much data; query == our ticker we passed
 export const getBalanceSheet = async (query: string) => {
     try {
         const data = await axios.get<CompanyBalanceSheet[]>(
