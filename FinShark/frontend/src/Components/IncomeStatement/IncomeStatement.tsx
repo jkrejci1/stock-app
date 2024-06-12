@@ -74,7 +74,7 @@ const IncomeStatement = (props: Props) => {
     //Get the income statement data we need from the api
     const incomeStatementFetch = async () => {
       const result = await getIncomeStatement(ticker)
-      setIncomeStatement(result!.data) //Could get an undefined possible put ! remember
+      setIncomeStatement(result!.data) //Could get an undefined possible put ! remember; notice how here it displays several dates data because we are showing the whole data array unlike some others where we use data[0] to just grab only the first object, while here we grabbed all of them
     }
     //Now call the income statement function to update the state as needed
     incomeStatementFetch()
