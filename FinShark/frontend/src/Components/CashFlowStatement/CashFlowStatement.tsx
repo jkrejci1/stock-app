@@ -1,8 +1,12 @@
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { getCashFlowStatement } from "../../api";
 import { CompanyCashFlow } from "../../company";
+import Table from "../Table/Table";
 
 type Props = {}
 
-//Config data for proper rendering
+//Config data for proper rendering here
 const config = [
     {
       label: "Date",
@@ -40,8 +44,23 @@ const config = [
   ];
 //Cashflow statement component for the dashboard
 const CashFlowStatement = (props: Props) => {
+    const ticker = useOutletContext<string>()
+    const [cashflowData, setCashflow] = useState<CompanyCashFlow[]>()
+    useEffect(() => {
+        const fetchCashflow = async () => {
+            const result = await getCashFlowStatement(ticker!)
+            setCashflow(result!.data) //Pass in the whole array
+        }
+        fetchCashflow()
+    }, [])
   return (
-    <div>CashflowStatement</div>
+    <>
+        { cashflowData ? (
+            <Table config={config} data={cashflowData} />
+        ) : (
+            <>Loading...</>
+        )}
+    </>
   )
 }
 

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import BalanceSheet from "../Components/BalanceSheet/BalanceSheet";
-import CashFlowStatement from "../Components/CashFlowStatement/CashflowStatement";
+import CashFlowStatement from "../Components/CashFlowStatement/CashFlowStatement";
 import CompanyProfile from "../Components/CompanyProfile/CompanyProfile";
 import IncomeStatement from "../Components/IncomeStatement/IncomeStatement";
 import CompanyPage from "../Pages/CompanyPage/CompanyPage";
