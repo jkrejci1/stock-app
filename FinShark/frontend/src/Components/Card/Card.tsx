@@ -24,7 +24,7 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) :
       id={id}
     >
       {/* Create link for the h2 that also is a link to the stock data so that when we click it we can get it. ${} --> used to pass data to the route (in this case from our API data) */}
-      <Link to={`/company/${searchResult.symbol}`}className="font-bold text-center text-black md:text-left">
+      <Link to={`/company/${searchResult.symbol}/company-profile`}className="font-bold text-center text-black md:text-left">
         {searchResult.name} ({searchResult.symbol})
       </Link>
       <p className="text-black">{searchResult.currency}</p>

@@ -35,6 +35,13 @@ const CompanyPage = (props: Props) => {
                     {/* When we create children components inside our components, we need to add those as well with the parent component as well as sending data we made need. CONTINUE */}
                     <CompanyDashboard ticker={ticker!}> {/* Pass down ticker, make sure its type is never undefined */}
                         <Tile title="Company Name" subTitle={company.companyName}></Tile>
+                        <Tile title="Price" subTitle={company.price.toString()}></Tile>
+                        <Tile title="Sector" subTitle={company.sector}></Tile>
+                        <Tile title="DCF" subTitle={company.dcf.toString()}></Tile>
+                        {/* Also show the description */}
+                        <p className="bg-white shadow rounded text-medium text-gray-900 p-3 mt-1 m-4">
+                            {company.description}
+                        </p>
                     </CompanyDashboard>
                 </div>
             ) : (
