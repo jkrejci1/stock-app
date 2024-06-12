@@ -50,7 +50,7 @@ const RatioList = ({ config, data } : Props) => {
                     </div>
                     {/* Now render the data that we want */}
                     <div className="inline-flex items-center text-base font-semibold text-gray-900">
-                        {row.render(data)}
+                        {row.render(data)} {/* Calls render from the config function in BalanceSheet.tsx, we'll send the full data object with all the data in it each time and have the current render from the current object we're on select which one it wants to use to correspond with the correct label we just displayed in this current map/index in the mapping array */}
                     </div>
                 </div>
             </li>

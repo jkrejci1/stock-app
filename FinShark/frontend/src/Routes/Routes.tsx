@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import BalanceSheet from "../Components/BalanceSheet/BalanceSheet";
+import CashFlowStatement from "../Components/CashFlowStatement/CashflowStatement";
 import CompanyProfile from "../Components/CompanyProfile/CompanyProfile";
 import IncomeStatement from "../Components/IncomeStatement/IncomeStatement";
 import CompanyPage from "../Pages/CompanyPage/CompanyPage";
@@ -28,7 +29,8 @@ export const router = createBrowserRouter([
                 children: [
                     { path: "company-profile", element: <CompanyProfile /> },
                     { path: "income-statement", element: <IncomeStatement /> },
-                    { path: "balance-sheet", element: <BalanceSheet /> }
+                    { path: "balance-sheet", element: <BalanceSheet /> },
+                    { path: "cashflow-statement", element: <CashFlowStatement /> }
                 ],
             },
         
