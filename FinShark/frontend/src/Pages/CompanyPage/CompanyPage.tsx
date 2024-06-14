@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import CompanyDashboard from "../../Components/CompanyDashboard/CompanyDashboard";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Spinner from "../../Components/Spinner/Spinner";
+import TenKFinder from "../../Components/TenKFinder/TenKFinder";
 import Tile from "../../Components/Tile/Tile";
 import { getCompanyProfile } from "../../api";
 import { CompanyProfile } from "../../company";
@@ -39,6 +40,8 @@ const CompanyPage = (props: Props) => {
                         <Tile title="Price" subTitle={company.price.toString()}></Tile>
                         <Tile title="Sector" subTitle={company.sector}></Tile>
                         <Tile title="DCF" subTitle={company.dcf.toString()}></Tile>
+                        {/* Now bring in the 10k finder component */}
+                        <TenKFinder ticker={company.symbol}/> {/* Remember the ticker we've been using would be the company symbol like AAPL for exmaple */}
                         {/* Also show the description */}
                         <p className="bg-white shadow rounded text-medium text-gray-900 p-3 mt-1 m-4">
                             {company.description}
