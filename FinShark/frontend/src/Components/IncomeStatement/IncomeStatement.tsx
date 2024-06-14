@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom"; //REMEMBER TO GET FROM DOM
 import { getIncomeStatement } from "../../api";
 import { CompanyIncomeStatement } from "../../company";
+import Spinner from "../Spinner/Spinner";
 import Table from "../Table/Table";
 
 //Component for the income statement
@@ -83,7 +84,7 @@ const IncomeStatement = (props: Props) => {
   return (
     <>
       {/* If we have data in our income statement variable show it, if not display loading during the time we're getting what we need */}
-      {incomeStatement ? <><Table config={configs} data={incomeStatement}/></> : <>Loading...</>}
+      {incomeStatement ? <><Table config={configs} data={incomeStatement}/></> : <Spinner />}
     </>
   )
 }

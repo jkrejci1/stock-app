@@ -1,5 +1,6 @@
 import axios from "axios";
-import { CompanyBalanceSheet, CompanyCashFlow, CompanyIncomeStatement, CompanyKeyMetrics, CompanyProfile, CompanySearch } from "./company";
+//Imports from our company.d types
+import { CompanyBalanceSheet, CompanyCashFlow, CompanyIncomeStatement, CompanyKeyMetrics, CompanyProfile, CompanySearch, CompanyTenK } from "./company";
 
 //We need to create to wrap around to correctly make our axios call
 //Gonna be an array
@@ -80,6 +81,19 @@ export const getCashFlowStatement = async (query: string) => {
         //Gets api data that is in an object when we do this call and put into data --> all of the types in our company.d.ts should be what all of the data is, but you can check it by console logging the data and it should match. They both might be in different orders though, but they don't need to be in the same exact order so it's fine.
         const data = await axios.get<CompanyCashFlow[]>(
             `https://financialmodelingprep.com/api/v3/cash-flow-statement/${query}?Limit=40&apikey=${process.env.REACT_APP_API_KEY}`
+        )
+        return data
+    } catch (error: any) {
+        console.log("error message from API: ", error.message)
+    }
+}
+
+//Function that will get the 10k data that we need, limit 40 to prevent too much data; query == our ticker we passed
+export const getTenK = async (query: string) => {
+    try {
+        //Gets api data that is in an object when we do this call and put into data --> all of the types in our company.d.ts should be what all of the data is, but you can check it by console logging the data and it should match. They both might be in different orders though, but they don't need to be in the same exact order so it's fine.
+        const data = await axios.get<CompanyTenK[]>(
+            `https://financialmodelingprep.com/api/v3/sec_filings/${query}?type=10-k&page=0&apikey=${process.env.REACT_APP_API_KEY}`
         )
         return data
     } catch (error: any) {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import CompanyDashboard from "../../Components/CompanyDashboard/CompanyDashboard";
 import Sidebar from "../../Components/Sidebar/Sidebar";
+import Spinner from "../../Components/Spinner/Spinner";
 import Tile from "../../Components/Tile/Tile";
 import { getCompanyProfile } from "../../api";
 import { CompanyProfile } from "../../company";
@@ -45,7 +46,7 @@ const CompanyPage = (props: Props) => {
                     </CompanyDashboard>
                 </div>
             ) : (
-                <div>Company not found</div>
+                <Spinner />
             )}
         </>
     )
