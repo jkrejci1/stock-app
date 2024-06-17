@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { formatLargeMonetaryNumber } from "../../Helpers/NumberFormatting";
 import { getBalanceSheet } from "../../api";
 import { CompanyBalanceSheet } from "../../company";
 import RatioList from "../RatioList/RatioList";
@@ -12,59 +13,71 @@ type Props = {}
 //Config for our list of data objects we're going to show on the page
 //When render is called, these are all the possible 
 const config = [
-    {
-      label: <div className="font-bold">Total Assets</div>,
-      //We will be sent all of the data in the data object here, then this object will access only the totalAssets data to render and the next will select a different and so on
-      render: (company: CompanyBalanceSheet) => company.totalAssets,
-    },
-    {
-      label: "Current Assets",
-      render: (company: CompanyBalanceSheet) => company.totalCurrentAssets,
-    },
-    {
-      label: "Total Cash",
-      render: (company: CompanyBalanceSheet) => company.cashAndCashEquivalents,
-    },
-    {
-      label: "Property & equipment",
-      render: (company: CompanyBalanceSheet) => company.propertyPlantEquipmentNet,
-    },
-    {
-      label: "Intangible Assets",
-      render: (company: CompanyBalanceSheet) => company.intangibleAssets,
-    },
-    {
-      label: "Long Term Debt",
-      render: (company: CompanyBalanceSheet) => company.longTermDebt,
-    },
-    {
-      label: "Total Debt",
-      render: (company: CompanyBalanceSheet) => company.otherCurrentLiabilities,
-    },
-    {
-      label: <div className="font-bold">Total Liabilites</div>,
-      render: (company: CompanyBalanceSheet) => company.totalLiabilities,
-    },
-    {
-      label: "Current Liabilities",
-      render: (company: CompanyBalanceSheet) => company.totalCurrentLiabilities,
-    },
-    {
-      label: "Long-Term Debt",
-      render: (company: CompanyBalanceSheet) => company.longTermDebt,
-    },
-    {
-      label: "Long-Term Income Taxes",
-      render: (company: CompanyBalanceSheet) => company.otherLiabilities,
-    },
-    {
-      label: "Stakeholder's Equity",
-      render: (company: CompanyBalanceSheet) => company.totalStockholdersEquity,
-    },
-    {
-      label: "Retained Earnings",
-      render: (company: CompanyBalanceSheet) => company.retainedEarnings,
-    },
+  {
+    label: <div className="font-bold">Total Assets</div>,
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalAssets),
+  },
+  {
+    label: "Current Assets",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalCurrentAssets),
+  },
+  {
+    label: "Total Cash",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.cashAndCashEquivalents),
+  },
+  {
+    label: "Property & equipment",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.propertyPlantEquipmentNet),
+  },
+  {
+    label: "Intangible Assets",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.intangibleAssets),
+  },
+  {
+    label: "Long Term Debt",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.longTermDebt),
+  },
+  {
+    label: "Total Debt",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.otherCurrentLiabilities),
+  },
+  {
+    label: <div className="font-bold">Total Liabilites</div>,
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalLiabilities),
+  },
+  {
+    label: "Current Liabilities",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalCurrentLiabilities),
+  },
+  {
+    label: "Long-Term Debt",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.longTermDebt),
+  },
+  {
+    label: "Long-Term Income Taxes",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.otherLiabilities),
+  },
+  {
+    label: "Stakeholder's Equity",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.totalStockholdersEquity),
+  },
+  {
+    label: "Retained Earnings",
+    render: (company: CompanyBalanceSheet) =>
+      formatLargeMonetaryNumber(company.retainedEarnings),
+  },
   ];
 
 const BalanceSheet = (props: Props) => {

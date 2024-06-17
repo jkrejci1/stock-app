@@ -37,9 +37,9 @@ const CompanyPage = (props: Props) => {
                     {/* When we create children components inside our components, we need to add those as well with the parent component as well as sending data we made need. CONTINUE */}
                     <CompanyDashboard ticker={ticker!}> {/* Pass down ticker, make sure its type is never undefined */}
                         <Tile title="Company Name" subTitle={company.companyName}></Tile>
-                        <Tile title="Price" subTitle={company.price.toString()}></Tile>
+                        <Tile title="Price" subTitle={"$" + company.price.toString()}></Tile>
+                        <Tile title="DCF" subTitle={"$" + company.dcf.toString()}></Tile>
                         <Tile title="Sector" subTitle={company.sector}></Tile>
-                        <Tile title="DCF" subTitle={company.dcf.toString()}></Tile>
                         {/* Now bring in the 10k finder component */}
                         <TenKFinder ticker={company.symbol}/> {/* Remember the ticker we've been using would be the company symbol like AAPL for exmaple */}
                         {/* Also show the description */}

@@ -11,7 +11,7 @@ const TenKFinderItem = ({tenK}: Props) => {
     <Link
     reloadDocument to={tenK.finalLink} //This will re-load the website to the 10k page for the year stated on said button you click on
     type="button"
-    className="inline-flex items-center p-4 text-md text-white bg-lightGreen rounded-md"
+    className="inline-flex items-center p-4 text-md text-white bg-lightGreen rounded-md m-0.5"
     > 10K - {tenK.symbol} - {fillingDate} </Link>
   )
 }

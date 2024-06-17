@@ -18,6 +18,7 @@ const TenKFinder = ({ ticker }: Props) => {
         const getTenKData = async () => {
             const value = await getTenK(ticker)
             setCompanyData(value?.data) //Possible undefiend
+            console.log("Button company data: " + companyData)
         }
         getTenKData()
     }, [ticker]) //Dependencies
