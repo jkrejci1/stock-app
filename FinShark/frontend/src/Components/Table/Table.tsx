@@ -1,3 +1,4 @@
+//NEED TO MAKE RESPONSIVE
 import { testIncomeStatementData } from "./testData";
 
 //This will contain the test data for us to play around with
@@ -59,7 +60,7 @@ const Table = ({ config, data }: Props) => {
     })
   return (
     <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8">
-        <table className="max-w-full divide-y divide-gray-200 m-5">
+        <table className="min-w-full divide-y divide-gray-200 m-5">
             <thead className="bg-gray-100">{renderedHeaders}</thead>
             <tbody>{renderedRows}</tbody>
         </table>
