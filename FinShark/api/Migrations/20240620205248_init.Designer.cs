@@ -25,6 +25,7 @@ namespace api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            //Builds the Comment Model in our database
             modelBuilder.Entity("api.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -47,10 +48,13 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    //This does the public and foreign key stuff
                     b.HasKey("Id");
 
+                    //Like here, it's saying we have a Foreign Key known as StockId that is connected to the Stock table
                     b.HasIndex("StockId");
 
+                    //The table will be called comments
                     b.ToTable("Comments");
                 });
 
