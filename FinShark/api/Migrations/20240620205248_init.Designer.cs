@@ -32,7 +32,7 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id")); //This is used to give Id a unique value
 
                     b.Property<string>("Content")
                         .IsRequired()

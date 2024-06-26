@@ -40,6 +40,7 @@ namespace api.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StockId = table.Column<int>(type: "int", nullable: true)
                 },
+                //Creates the public and foreign key
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
