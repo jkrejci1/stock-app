@@ -29,6 +29,7 @@ namespace api.Migrations
                     table.PrimaryKey("PK_Stock", x => x.Id);
                 });
 
+            //Creates the Comment table to be migrated
             migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
