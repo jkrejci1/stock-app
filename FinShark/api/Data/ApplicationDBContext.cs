@@ -23,7 +23,7 @@ namespace api.Data
         //We do this by wrapping this in a DbSet --> Fancy word for grabbing something out of the DB and you're gonna do something with it
         //Names must match the class names for the models
         //DbSet manipulate the table of your choosing and creates the database for us, it grabs these tables and then creates the database with them
-        public DbSet<Stock> Stock { get; set; } //When using this you're manipulating the stock table and this creates the DB for us
+        public DbSet<Stock> Stocks { get; set; } //When using this you're manipulating the stock table and this creates the DB for us
         
         //Creates a table called Comments in our data base where the type of it will be the name of the class for our Comment Model (The data type needs to be named after the class (comment in this case) but we can name the table anything, best practice to do it like this though)
         public DbSet<Comment> Comments { get; set; } //This and above are the Stock and Comments table linking the DB to the code
