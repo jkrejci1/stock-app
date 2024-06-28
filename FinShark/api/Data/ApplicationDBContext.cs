@@ -1,5 +1,7 @@
 //This class allows the program to search for and in your individual tables
 //Giant object that allows us to specify which tables we want
+
+//TO MAKE CHANGES TO THE DB USE "dotnet ef migrations add ." then run "dotnet ef databse update" this will change it
 using System;
 using System.Collections.Generic;
 using System.Linq;
