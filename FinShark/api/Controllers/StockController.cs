@@ -38,7 +38,7 @@ namespace api.Controllers
             return Ok(stocks);
         }
 
-        //This will return one actual item unlike above
+        //This will return one actual item unlike above as it selects a specific item by its original ID value
         [HttpGet("{id}")]
 
         //I action result is a return method --> wrapper so that when you return something from the api you dont have to go through to much coding to tell someone what status of their endpoint is or errors like http errors
