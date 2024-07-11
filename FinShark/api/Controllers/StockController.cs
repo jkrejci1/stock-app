@@ -16,6 +16,7 @@ using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using api.Dtos.Stock; //Need to bring this in to use our Dtos
 
+//REMEMBER TO NEVER FORGET ;'s OR YOU MIGHT GET AN ERROR USING "dotnet watch run"
 namespace api.Controllers
 {
     [Route("api/stock")] //This is where we would be in the database as this is for the stock controller
@@ -96,6 +97,28 @@ namespace api.Controllers
             //Save the updated changes to save those updates in the database
             _context.SaveChanges();
             return Ok(stockModel.ToStockDto());
+
+        }
+
+        //Delete api endpoint method for deleting a stock by its ID
+        [HttpDelete]
+        [Route("{id}")] //Need a route in order to find something remember
+        public IActionResult Delete([FromRoute] int id) {
+            //Make sure that this stock exists firsts
+                                                            //x where x.id is == id
+            var stockModel = _context.Stocks.FirstOrDefault(x => x.Id == id);
+
+            //If it doesn't exist, don't do anything
+            if(stockModel == null) {
+                return NotFound();
+            }
+
+            //If the stock exists, then delete it by the ID (Its primary key)
+            _context.Stocks.Remove(stockModel);
+
+            _context.SaveChanges();
+
+            return NoContent(); //No content gives us a status 204 code which means that the delete was a success
 
         }
     }
