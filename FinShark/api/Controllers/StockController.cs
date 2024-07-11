@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
+using api.Dtos.Stock; //Need to bring this in to use our Dtos
 
 namespace api.Controllers
 {
@@ -64,11 +65,11 @@ namespace api.Controllers
         //Need this from body as our data is going to be sent in JSON and use our dto as there is some data that we wouldn't want from the user
         public IActionResult Create([FromBody] CreateStockRequestDto stockDto) {
             var stockModel = stockDto.ToStockFromCreateDTO();
-            _context.Stocks.Add(stockModel)
+            _context.Stocks.Add(stockModel);
             _context.SaveChanges();
 
             //It's going to pass the new id into the ID and then it's going to return in the form of a ToStock DTO
-            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto())
+            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
         }
     }
 }
