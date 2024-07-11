@@ -71,5 +71,32 @@ namespace api.Controllers
             //It's going to pass the new id into the ID and then it's going to return in the form of a ToStock DTO
             return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
         }
+
+        //
+        //ID goes with the route, and we also got our body to work with
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto) {
+            //We first need to search if we actually have that thing to update and track it
+            var stockModel = _context.Stocks.FirstOrDefault(x => x.Id == id); //We will saerch if this thing we want to update exists by using it's ID (which is also its public key remember)
+
+            //If that stock doesn't exist, we don't want to do anything
+            if(stockModel == null) {
+                return NotFound();
+            }
+
+            //If we were able to actually retrieve an existing stock to update, let's update it then!
+            stockModel.Symbol = updateDto.Symbol;
+            stockModel.CompanyName = updateDto.CompanyName;
+            stockModel.Purchase = updateDto.Purchase;
+            stockModel.LastDiv = updateDto.LastDiv;
+            stockModel.Industry = updateDto.Industry;
+            stockModel.MarketCap = updateDto.MarketCap;
+
+            //Save the updated changes to save those updates in the database
+            _context.SaveChanges();
+            return Ok(stockModel.ToStockDto());
+
+        }
     }
 }
