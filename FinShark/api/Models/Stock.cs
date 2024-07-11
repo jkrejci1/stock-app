@@ -37,9 +37,9 @@ namespace api.Models
         //Work on our one to many relationship (Makes a list with the data type being Comment called Comments)
         //Has to match the class name in the Comment.cs file to create a comment list
         //Will tie certain comments to certain stocks then by doing this, displaying the right comments when appropriate for a specific stock
-        //So then a stock can have many comments but a comment can't have many different stocks, that wouldn't make sense
+        //So then a stock can have many comments but a comment can't have many different stocks, that wouldn't make sense as you can leave one single comment for multiple different stocks on this app
         //As you can see from the comment model then, this will be tied in from the StockId (The Id for Stock model will be the primary key for the foreign key Comments here then) (Stock using StockId is the parent of the Comments foreign key)
         //We know that there's gonna be more than 1 comment per stock, so to access all of them we'll use the C# list data structure (like lists in Python)
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<Comment> Comments { get; set; } = new List<Comment>(); //This doesn't show up in the db itself as a foriegn key but you'll see the comments foriegn key in the comment table instead if you want to see if it exists
     }
 }

@@ -29,6 +29,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapControllers(); //HTTP redirect error fix
+app.MapControllers(); //HTTPS redirect error fix
 
 app.Run();

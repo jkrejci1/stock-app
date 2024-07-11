@@ -23,7 +23,7 @@ namespace api.Data
 
         //Add the tables that we'll want as dbContext will allow us to access tables
         //We do this by wrapping this in a DbSet --> Fancy word for grabbing something out of the DB and you're gonna do something with it
-        //Names must match the class names for the models
+        //Names (for where the type is) must match the class names for the models
         //DbSet manipulate the table of your choosing and creates the database for us, it grabs these tables and then creates the database with them
         public DbSet<Stock> Stocks { get; set; } //When using this you're manipulating the stock table and this creates the DB for us
         

@@ -16,36 +16,40 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
-    [Route("api/stock")]
+    [Route("api/stock")] //This is where we would be in the database as this is for the stock controller
     [ApiController]
     public class StockController : ControllerBase
     {
         //Make read only to prevent it being mutable when running
         private readonly ApplicationDBContext _context;
 
-        //Costructor
+        //Costructor --> Brings in database by brining in DbContext
         public StockController(ApplicationDBContext context)
         {
-            _context = context;
+            _context = context; //Set our private _context to the ApplicationDBContext value
         }
 
+        //The call starts right here and then whatever is in our IActionResult after is what we do for it
         //Get is a read --> getting it out of a DB and r
-        [HttpGet]
+        //This will be for getting every stock we need
+        [HttpGet] //Putting this here marks the next function (IActionResult) as an HttpGet method which is why we put this here
+        //Action result is for handeling returning api endpoint stuff and knowing that we are doing that easier
         public IActionResult GetAll() {
-            //.ToList() is needed because of deffered execution
-            var stocks = _context.Stocks.ToList();
+            //.ToList() is needed because of deffered execution (the evaluation of this is delayed until its realized value is actually required to improve performance by preventing unnecessary execution)
+            //So this action is only executed when we need stocks for something when using data, not when this code itself here executes but if we call stocks somewhere else
+            var stocks = _context.Stocks.ToList(); //Access Stocks value in ApplicationDBContext
 
             return Ok(stocks);
         }
 
         //This will return one actual item unlike above as it selects a specific item by its original ID value
-        [HttpGet("{id}")]
-
+        //This will get one specific stock to go through the specific details for that one stock itself on its own page
+        [HttpGet("{id}")] //>NET will take this, turn it into an int below, and then we can use it below in our actual code
         //I action result is a return method --> wrapper so that when you return something from the api you dont have to go through to much coding to tell someone what status of their endpoint is or errors like http errors
         public IActionResult GetById([FromRoute] int id) {  //This takes the id from above and turns it into an int
             var stock = _context.Stocks.Find(id); //Searches in table by the id value
 
-            //Null Check to see if stock is null (dont have something)
+            //Null Check to see if stock is null (dont have something for the requested stock)
             if (stock == null) 
             {
                 return NotFound(); //Return notfound if the stock doesn't exist
