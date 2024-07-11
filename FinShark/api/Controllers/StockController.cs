@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -37,8 +38,8 @@ namespace api.Controllers
         public IActionResult GetAll() {
             //.ToList() is needed because of deffered execution (the evaluation of this is delayed until its realized value is actually required to improve performance by preventing unnecessary execution)
             //So this action is only executed when we need stocks for something when using data, not when this code itself here executes but if we call stocks somewhere else
-            var stocks = _context.Stocks.ToList(); //Access Stocks value in ApplicationDBContext
-
+            var stocks = _context.Stocks.ToList() //Access Stocks value in ApplicationDBContext
+                .Select(s => s.ToStockDto()); //.NETs version of a map like in React --> returns a immutable array of the ToStockDto. So then we get a list of data according to our dto mapping of what exactly should and shouldn't be returned. (REQUIRED TO USE SELECT IF YOU WANT TO GET DATA IN A LIST/ARRAY ACCORDING TO A DTO)!!
             return Ok(stocks);
         }
 
@@ -55,7 +56,7 @@ namespace api.Controllers
                 return NotFound(); //Return notfound if the stock doesn't exist
             }
 
-            return Ok(stock); //If we have on return it
+            return Ok(stock.ToStockDto()); //If we have on return it
         }
     }
 }
