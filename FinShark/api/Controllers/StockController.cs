@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
-using api.Mappers;
+using api.Mappers; //Brings in toStockDto and other functions from mappers to be used here
 using Microsoft.AspNetCore.Mvc;
-using api.Dtos.Stock; //Need to bring this in to use our Dtos
+using api.Dtos.Stock; //Need to bring this in to use our Dtos so we can fully use everything involving them
 
 //REMEMBER TO NEVER FORGET ;'s OR YOU MIGHT GET AN ERROR USING "dotnet watch run"
 namespace api.Controllers
@@ -41,7 +41,7 @@ namespace api.Controllers
             //.ToList() is needed because of deffered execution (the evaluation of this is delayed until its realized value is actually required to improve performance by preventing unnecessary execution)
             //So this action is only executed when we need stocks for something when using data, not when this code itself here executes but if we call stocks somewhere else
             var stocks = _context.Stocks.ToList() //Access Stocks value in ApplicationDBContext
-                .Select(s => s.ToStockDto()); //.NETs version of a map like in React --> returns a immutable array of the ToStockDto. So then we get a list of data according to our dto mapping of what exactly should and shouldn't be returned. (REQUIRED TO USE SELECT IF YOU WANT TO GET DATA IN A LIST/ARRAY ACCORDING TO A DTO)!!
+                .Select(s => s.ToStockDto()); //.NETs version of a map like in React --> returns a immutable array of the ToStockDto. So then we get a list of data according to our dto mapping of what exactly should and shouldn't be returned. (REQUIRED TO USE SELECT IF YOU WANT TO GET DATA IN A LIST/ARRAY ACCORDING TO A DTO)!! (SO s == each individual stock table data where s == 0 will be the first one and s == 1 will be the second one and so on like in a for loop and will put them all in a list called stocks--> then we will take each s (stock data) and transform the data using the dto we want to use for this situation to make sure we get the NEEDED data only)
             return Ok(stocks);
         }
 
@@ -58,19 +58,22 @@ namespace api.Controllers
                 return NotFound(); //Return notfound if the stock doesn't exist
             }
 
-            return Ok(stock.ToStockDto()); //If we have on return it
+            return Ok(stock.ToStockDto()); //If we have on return it to the front end as a ToStockDto mapping format (because you are in Stocks --> we extended Stock objects to use the ToStockDto method in our stockMappers file which we imported above using the "using api.mappers")
         }
 
         //Here is our POST for getting stock data in the DB
         [HttpPost]
-        //Need this from body as our data is going to be sent in JSON and use our dto as there is some data that we wouldn't want from the user
+        //Need this from body as our data is going to be sent in JSON and use our dto as there is some data that we wouldn't want from the user (like our database assigns an ID for a stock, so we wouldn't want the user to send data for the ID as that wouldn't make sense and could cause errors)
         public IActionResult Create([FromBody] CreateStockRequestDto stockDto) {
-            var stockModel = stockDto.ToStockFromCreateDTO();
+            var stockModel = stockDto.ToStockFromCreateDTO(); //Like in the GetById, we are using api.mappers, where we made an extension to createStockRequestDto to have the method ToStockFromCreateDTO extended to it which is why we can use it here
+
+            //Adds our new stock called stockModel and saves changes we made to the database
             _context.Stocks.Add(stockModel);
             _context.SaveChanges();
 
             //It's going to pass the new id into the ID and then it's going to return in the form of a ToStock DTO
-            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
+            //WE ARE ABLE TO FIND THE ID WITHOUT ASSIGNING IT BECAUSE SQL SERVER AUTOMATICALLY ASSIGNS AN ID ITSELF FROM HOW WE CREATED OUR MODELS REMEMBER (like when you manually add data into sql server when editing top 200 rows, it block you from entering an ID and then when you put in the rest of the data and press enter, it will add that data and create an ID for it for the public key itself!!)
+            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto()); //This doesn't create and ID, we use stockModel's created Id to use the GetById method above to show that we have succesfully added our data
         }
 
         //

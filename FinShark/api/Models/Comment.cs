@@ -16,7 +16,7 @@ namespace api.Models
         
         //Linking relationships within the comment using CONVENTION --> .NET Core will form relationships for us NEED BOTH BELOW
         //Creates a StockId foreign key in the Comment table and uses Stock to access its properties
-        public int? StockId { get; set; } //Key to form the relationship within the database
+        public int? StockId { get; set; } //Key to form the relationship within the database (REMEMBER --> THIS IS SUPPOSSED TO BE AN ID THAT MATCHES WITH THE SEPERATE STOCK ID PARENT SO WE CAN ACCESS COMMENT CHILDREN FOR A STOCK) (SO THEN, THE FOREIGN KEY ITSELF NEEDS TO BE IN THE CHILD TABLE FOR THIS TO WORK REMEMBER!)
         public Stock? Stock { get; set; } //Navigation property for the StockId key --> Allows us to access the other side of the model (Accessing data in the Stock model here for instance (which would be the data for whatever stock this comment will be tied to. If the comment was on Apple stock, then it will access the Apple stock data then for example so like Stock.CompanyName would == Apple then and so on. )) (like Stock.CompanyName, etc) while StockId is the foreign key for containing such data
 
     }

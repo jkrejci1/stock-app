@@ -12,8 +12,11 @@ namespace api.Mappers
 {
     public static class StockMappers
     {
+        //This will be used for a response DTO
         //This function will trim out just the comments for reading data
-        public static StockDto ToStockDto(this Stock stockModel)
+        //Takes the stock model data from the StockDto and creates a new object called StockDto that sets all of its own object values to the values we want from the dto then returns it to be used in the controller
+        //ALSO VERY IMPORTANT because ToStockDto is now an extension of Type Stock from what we did here, we can 'dot' into it using this ToStockDto function by doing Stock (variableNameOfStock).ToStockDto like in the controller when we do it
+        public static StockDto ToStockDto(this Stock stockModel) //Function of type StockDto called ToStockDto which extends the Stock Model (then we can use the Stock Model to use data that we would want to pass back specifically (trim down what we extended over from the Stock model))
         {
             return new StockDto 
             {
@@ -27,10 +30,14 @@ namespace api.Mappers
             };
         }
 
+        //This will be used a request DTO
         //This function will trim out the comments and id for posting new stock data in our database
-        public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockDto)
+        //When we send data to the database it has to be of type of the database as it wouldn't be a dto type
+        //When sending data to the model with dto, type the dto as the same name as the model you're sending said data to
+        //VERY IMPORTANT because ToStockFromCreateDTO is an extension of the type CreateStockRequestDto we can 'dot' into it using whatever would be your CreateStockRequestDto typed variable like in the controller when we do it
+        public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockDto) //Extends the CreateStockRequestDto in Dtos-->CreateStockRe... and call it stockDto
         {
-            return new Stock
+            return new Stock //This object will be added to our Stock Model as a seperate stock
             {
                 Symbol = stockDto.Symbol,
                 CompanyName = stockDto.CompanyName,
