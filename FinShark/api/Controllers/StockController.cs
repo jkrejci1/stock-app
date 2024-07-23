@@ -69,7 +69,7 @@ namespace api.Controllers
 
             //Adds our new stock called stockModel and saves changes we made to the database
             _context.Stocks.Add(stockModel);
-            _context.SaveChanges();
+            _context.SaveChanges(); //Saved into the DB here, ID created automatically like when we were manually adding data to our DB in SqlServer
 
             //It's going to pass the new id into the ID and then it's going to return in the form of a ToStock DTO
             //WE ARE ABLE TO FIND THE ID WITHOUT ASSIGNING IT BECAUSE SQL SERVER AUTOMATICALLY ASSIGNS AN ID ITSELF FROM HOW WE CREATED OUR MODELS REMEMBER (like when you manually add data into sql server when editing top 200 rows, it block you from entering an ID and then when you put in the rest of the data and press enter, it will add that data and create an ID for it for the public key itself!!)
