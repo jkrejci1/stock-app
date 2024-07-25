@@ -64,7 +64,7 @@ namespace api.Controllers
         //Here is our POST for getting stock data in the DB
         [HttpPost]
         //Need this from body as our data is going to be sent in JSON and use our dto as there is some data that we wouldn't want from the user (like our database assigns an ID for a stock, so we wouldn't want the user to send data for the ID as that wouldn't make sense and could cause errors)
-        public IActionResult Create([FromBody] CreateStockRequestDto stockDto) {
+        public IActionResult Create([FromBody] CreateStockRequestDto stockDto) { //Unlike above we aren't gonna have all this JSON be passed in the URL, that wouldn't make sense, instead it will be passed in the body of the HTTP so select it using '[FromBody]'
             var stockModel = stockDto.ToStockFromCreateDTO(); //Like in the GetById, we are using api.mappers, where we made an extension to createStockRequestDto to have the method ToStockFromCreateDTO extended to it which is why we can use it here
 
             //Adds our new stock called stockModel and saves changes we made to the database
@@ -72,7 +72,7 @@ namespace api.Controllers
             _context.SaveChanges(); //Saved into the DB here, ID created automatically like when we were manually adding data to our DB in SqlServer
 
             //It's going to pass the new id into the ID and then it's going to return in the form of a ToStock DTO
-            //WE ARE ABLE TO FIND THE ID WITHOUT ASSIGNING IT BECAUSE SQL SERVER AUTOMATICALLY ASSIGNS AN ID ITSELF FROM HOW WE CREATED OUR MODELS REMEMBER (like when you manually add data into sql server when editing top 200 rows, it block you from entering an ID and then when you put in the rest of the data and press enter, it will add that data and create an ID for it for the public key itself!!)
+            //WE ARE ABLE TO FIND THE ID WITHOUT ASSIGNING IT BECAUSE SQL SERVER AUTOMATICALLY ASSIGNS AN ID ITSELF FROM HOW WE CREATED OUR MODELS REMEMBER (like when you manually add data into sql server when editing top 200 rows, it block you from entering an ID and then when you put in the rest of the data and press enter, it will add that data and create an ID for it for the public key itself!!) Then it returns as the type of a ToStockDto
             return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto()); //This doesn't create and ID, we use stockModel's created Id to use the GetById method above to show that we have succesfully added our data
         }
 
