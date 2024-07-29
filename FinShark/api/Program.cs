@@ -1,4 +1,7 @@
 using api.Data;
+using api.Interfaces; //Bring in interface folder to allow our program to use it
+using api.Models;
+using api.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
     //This searches within our appsettings.json file for DefaultConnection within our ConnectionStrings which will then contain our connection string (May need to search for one, it also needs to contain the name of the device you're doing this on (so the name of my laptop for instance in my case))
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); //Search within our app settings json
 });
+
+//Allows us to use the interfaces in our program
+builder.Services.AddScoped<IStockRepository, StockRepository>();
 
 var app = builder.Build();
 
