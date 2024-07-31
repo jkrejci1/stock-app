@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Data;
+using api.Data; //Brings in the datbase for ApplicationDBContext
 using api.Mappers; //Brings in toStockDto and other functions from mappers to be used here
 using Microsoft.AspNetCore.Mvc;
 using api.Dtos.Stock; //Need to bring this in to use our Dtos so we can fully use everything involving them
@@ -23,14 +23,15 @@ using api.Interfaces; //Bring in interface folder data
 namespace api.Controllers
 {
     [Route("api/stock")] //This is where we would be in the database as this is for the stock controller
-    [ApiController]
+    [ApiController] //What allows us to use the HTTP request stuff and response stuff for HTTP requests
     public class StockController : ControllerBase
     {
         //Make read only to prevent it being mutable when running
         private readonly ApplicationDBContext _context;
         private readonly IStockRepository _stockRepo; //Brings in our repository interface that will have methods to use
 
-        //Costructor --> Brings in database by brining in DbContext and seeting our database data to a variable called context
+        //Costructor --> Brings in database by brining in DbContext and setting our database data to a variable called context
+        //Brings in the files as we are already using them in the namespace, and then constructs our empty _context and _stockRepo into the classes themselves
         public StockController(ApplicationDBContext context, IStockRepository stockRepo)
         {
             _stockRepo = stockRepo; //Bring in the stock repository interface
@@ -57,7 +58,7 @@ namespace api.Controllers
         [HttpGet("{id}")] //>NET will take this, turn it into an int below, and then we can use it below in our actual code
         //I action result is a return method --> wrapper so that when you return something from the api you dont have to go through to much coding to tell someone what status of their endpoint is or errors like http errors
         public async Task<IActionResult> GetById([FromRoute] int id) {  //This takes the id from above and turns it into an int
-            var stock = await _context.Stocks.FindAsync(id); //Searches in table by the id value
+            var stock = await _stockRepo.GetByIdAsync(id); //Searches in table by the id value
 
             //Null Check to see if stock is null (dont have something for the requested stock)
             if (stock == null) 
@@ -73,12 +74,8 @@ namespace api.Controllers
         //Need this from body as our data is going to be sent in JSON and use our dto as there is some data that we wouldn't want from the user (like our database assigns an ID for a stock, so we wouldn't want the user to send data for the ID as that wouldn't make sense and could cause errors)
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto) { //Unlike above we aren't gonna have all this JSON be passed in the URL, that wouldn't make sense, instead it will be passed in the body of the HTTP (like in HTTP requests (used this in JavaScript projects before when passing user data to MongoDB with their accounts and saved data to those accounts)) so select that data using '[FromBody]'
             //Take stockModel and have it == to our stockDto and use the method for it that transforms it back into a stock model using our mapper for putting data in the database
-            var stockModel = stockDto.ToStockFromCreateDTO(); //Like in the GetById, we are using api.mappers, where we made an extension to createStockRequestDto to have the method ToStockFromCreateDTO extended to it which is why we can use it here
-
-            //Adds our new stock called stockModel and saves changes we made to the database
-            await _context.Stocks.AddAsync(stockModel);
-            //We need an await for saving the changes to!
-            await _context.SaveChangesAsync(); //Saved into the DB here, ID created automatically like when we were manually adding data to our DB in SqlServer
+            var stockModel = stockDto.ToStockFromCreateDTO(); //Like in the GetById, we are using api.mappers, where we made an extension to createStockRequestDto to have the method ToStockFromCreateDTO extended to it which is why we can use it her
+            await _stockRepo.CreateAsync(stockModel);
 
             //It's going to use the GetById method we created above and pass the ID from our newly created stockModel variable as an object to the URL "{id}" parameter and then the data will return as a DTO version of the stockModel data
             //WE ARE ABLE TO FIND THE ID WITHOUT ASSIGNING IT BECAUSE SQL SERVER AUTOMATICALLY ASSIGNS AN ID ITSELF FROM HOW WE CREATED OUR MODELS REMEMBER (like when you manually add data into sql server when editing top 200 rows, it block you from entering an ID and then when you put in the rest of the data and press enter, it will add that data and create an ID for it for the public key itself!!) Then it returns as the type of a ToStockDto
@@ -92,24 +89,13 @@ namespace api.Controllers
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto) {
             //We first need to search if we actually have that thing to update and track it
             //x would be our parameter where we'd access the Id of the stock we're looking at, and returns true if that Id == to the id of our Route"[id]" that was sent in the url for what we want to update in this method (so if it's true, then stockModel will be == to the stock in our database that is identified by that Id!!)
-            var stockModel = await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id); //We will search if this thing we want to update exists by using it's ID (which is also its public key remember)
+            var stockModel = await _stockRepo.UpdateAsync(id, updateDto);
 
             //If that stock doesn't exist, we don't want to do anything
             if(stockModel == null) {
                 return NotFound();
             }
 
-            //If we were able to actually retrieve an existing stock to update, let's update it then!
-            //Modify and map updates straight on the method here instead of outside it as entity framework starts tracking it right away here when we retireved it by making the stockModel variable above at the beginning(this is where the updates happen!!)
-            stockModel.Symbol = updateDto.Symbol;
-            stockModel.CompanyName = updateDto.CompanyName;
-            stockModel.Purchase = updateDto.Purchase;
-            stockModel.LastDiv = updateDto.LastDiv;
-            stockModel.Industry = updateDto.Industry;
-            stockModel.MarketCap = updateDto.MarketCap;
-
-            //Save the updated changes to save those updates in the database
-            await _context.SaveChangesAsync();
             return Ok(stockModel.ToStockDto());
 
         }
@@ -120,17 +106,12 @@ namespace api.Controllers
         public async Task<IActionResult> Delete([FromRoute] int id) {
             //Make sure that this stock exists firsts
                                                             //x where x.id is == id
-            var stockModel = await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
+            var stockModel = await _stockRepo.DeleteAsync(id);
 
             //If it doesn't exist, don't do anything
             if(stockModel == null) {
                 return NotFound();
             }
-
-            //If the stock exists, then delete it by the ID (Its primary key)
-            _context.Stocks.Remove(stockModel); //Don't use await for a remove, remove is not a async function so we can't use delete there unlike everything else we did!
-
-            await _context.SaveChangesAsync();
 
             return NoContent(); //No content gives us a status 204 code which means that the delete was a success
 
