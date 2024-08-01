@@ -22,6 +22,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
 
 //Allows us to use the interfaces in our program
 builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+
 
 var app = builder.Build();
 
