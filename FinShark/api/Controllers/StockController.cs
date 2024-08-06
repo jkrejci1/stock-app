@@ -50,7 +50,7 @@ namespace api.Controllers
             var stocks = await _stockRepo.GetAllAsync(); //Access Stocks value in ApplicationDBContext using async to access data in the background of our program running (using the according method in our Repository)
             var stockDto = stocks.Select(s => s.ToStockDto()); //.NETs version of a map like in React --> returns a immutable array of the ToStockDto. So then we get a list of data according to our dto mapping of what exactly should and shouldn't be returned. (REQUIRED TO USE SELECT IF YOU WANT TO GET DATA IN A LIST/ARRAY ACCORDING TO A DTO)!! (SO s == each individual stock table data where s == 0 will be the first one and s == 1 will be the second one and so on like in a for loop and will put them all in a list called stocks--> then we will take each s (stock data) and transform the data using the dto we want to use for this situation to make sure we get the NEEDED data only)
             
-            return Ok(stocks);
+            return Ok(stockDto);
         }
 
         //This will return one actual item unlike above as it selects a specific item by its original ID value

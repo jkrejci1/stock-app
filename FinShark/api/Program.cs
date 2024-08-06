@@ -11,6 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(); //Add the controllers to the api Program
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//Use the Newton Software for certain key relationships (PREVENTS OBJECT CYCLES!!)
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
 
 //Let's hook up the DB by using that ApplicationDBContext class
 //So this along with the code that's inside ApplicationDBContext is what creates our database with the data we want

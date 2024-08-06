@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Comment;
 
 //Makes it where we trim down responses when handeling data
 //Here we will remove sending all the comments back and fourth every single time we call for the stock table in the api in order to save space and not have to send so much data at once that is unnecessary
@@ -30,7 +31,8 @@ namespace api.Dtos.Stock
         //Market Cap data (make long can it be in the trillions)
         public long MarketCap { get; set; } //Data Type == bigint
 
-        //We will remove comments here 
+        //For the comments
+        public List<CommentDto> Comments { get; set; }
 
     }
 }

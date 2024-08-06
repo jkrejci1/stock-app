@@ -55,14 +55,14 @@ namespace api.Repository
         //Now that we have abstracted our code doing this, whatever uses this method in the controller can all be modified at once (for whatever would cause such a change in this function) --> DEPENDENCY INJECTION
         public async Task<List<Stock>> GetAllAsync() {
             //Return all the stock data
-            return await _context.Stocks.ToListAsync();
+            return await _context.Stocks.Include(c => c.Comments).ToListAsync(); //Does the usual, but to get our comments (foreign key relationship) we need to use include
         }
 
         //Method for the get by id
         public async Task<Stock?> GetByIdAsync(int id)
         {
             //Return all the stocks that mathc the id
-            return await _context.Stocks.FindAsync(id);
+            return await _context.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id); //Same as include above where i is true (done) if its given id == to our id we want to search with
         }
 
         //Method for the update
