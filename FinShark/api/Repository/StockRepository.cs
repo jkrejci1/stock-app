@@ -80,8 +80,12 @@ namespace api.Repository
                     stocks = query.IsDecsending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
                 }
             }
+
+            //Pagination calc for only allowing certain amount of data on one page to prevent crashing if there's is a very large amount of data to grab
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
             //Return the stocks that should be returned according to any possible query filtering
-            return await stocks.ToListAsync();
+            return await stocks.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         //Method for the get by id

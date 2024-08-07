@@ -15,5 +15,9 @@ namespace api.Helpers
         //For sorting found data in the database (using queries)
         public string? SortBy { get; set; } = null;
         public bool IsDecsending { get; set; } = false;
+
+        //Pagination for making sure there's not too much data going onto one page when calling all the data from the data base
+        public int PageNumber { get; set; } = 1; //Starts it at one page by default
+        public int PageSize { get; set; } = 20; //Sets the amount of data on a single page
     }
 }
