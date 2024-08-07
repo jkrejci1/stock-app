@@ -80,7 +80,7 @@ namespace api.Controllers
             await _commentRepo.CreateAsync(commentModel);
 
             //Return the DTO version of the comment, we will find it by its id
-            return CreatedAtAction(nameof(GetById), new { id = commentModel }, commentModel.ToCommentDto());
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
         }
 
         //Method for updating a comment
@@ -93,7 +93,7 @@ namespace api.Controllers
                 return BadRequest(ModelState);
                 
             //See if you can find the comment to update
-            var comment = await _commentRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate(id));
+            var comment = await _commentRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate());
 
             if (comment == null)
             {

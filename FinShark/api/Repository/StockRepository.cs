@@ -70,6 +70,16 @@ namespace api.Repository
                 stocks = stocks.Where(s => s.Symbol.Contains(query.Symbol));
             }
 
+            //If we have a sort by query
+            if(!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                //We will sort by the symbol if SortBy == Symbol in the query object, ignoring characters like ~ for example
+                if(query.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
+                {
+                    //If we order by descending, we will order by descending symbol, if not then just order by symbol without descending (it will order it by ascending by default)
+                    stocks = query.IsDecsending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
+                }
+            }
             //Return the stocks that should be returned according to any possible query filtering
             return await stocks.ToListAsync();
         }

@@ -11,5 +11,9 @@ namespace api.Helpers
         //These query objects will be optionally given by the user
         public string? Symbol { get; set; } = null;
         public string? CompanyName { get; set; } = null;
+
+        //For sorting found data in the database (using queries)
+        public string? SortBy { get; set; } = null;
+        public bool IsDecsending { get; set; } = false;
     }
 }
