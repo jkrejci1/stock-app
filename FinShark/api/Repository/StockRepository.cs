@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Stock;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -53,9 +54,24 @@ namespace api.Repository
 
         //Method that makes use of the GetAllAsync method which will return a list of stocks
         //Now that we have abstracted our code doing this, whatever uses this method in the controller can all be modified at once (for whatever would cause such a change in this function) --> DEPENDENCY INJECTION
-        public async Task<List<Stock>> GetAllAsync() {
-            //Return all the stock data
-            return await _context.Stocks.Include(c => c.Comments).ToListAsync(); //Does the usual, but to get our comments (foreign key relationship) we need to use include
+        public async Task<List<Stock>> GetAllAsync(QueryObject query) {
+            //Return all the stock data according to our query
+            var stocks = _context.Stocks.Include(c => c.Comments).AsQueryable(); //Does the usual, but to get our comments (foreign key relationship) we need to use include
+
+            //If we have a company name query to filter, then only find stocks that contain that company name
+            if(!string.IsNullOrWhiteSpace(query.CompanyName))
+            {
+                stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName));
+            }
+
+            //If we have a query for symbol to filter
+            if(!string.IsNullOrWhiteSpace(query.Symbol))
+            {
+                stocks = stocks.Where(s => s.Symbol.Contains(query.Symbol));
+            }
+
+            //Return the stocks that should be returned according to any possible query filtering
+            return await stocks.ToListAsync();
         }
 
         //Method for the get by id

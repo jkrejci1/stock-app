@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 //Need to bring in proper data
 using api.Dtos.Stock;
+using api.Helpers;
 using api.Models;
 
 //Interface for allowing us to plug in certain code to other places abstracting our code away
@@ -21,7 +22,7 @@ namespace api.Interfaces
         //An interface cannot contain a constructor (as it cannot be used to create objects)
     public interface IStockRepository
     {
-        Task<List<Stock>> GetAllAsync(); //Says that when using this interface we'll need to use the GetAllAsync method to return something (list of stocks here) the actual code that will do that is in the repository
+        Task<List<Stock>> GetAllAsync(QueryObject query); //Says that when using this interface we'll need to use the GetAllAsync method to return something (list of stocks here) the actual code that will do that is in the repository
         Task<Stock?> GetByIdAsync(int id); //? == used for first or defaults as they have the possibility to be null. Notice it also should take in a parameter called which will be assigned to the variable --> id
         Task<Stock> CreateAsync(Stock stockModel);
         Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto);

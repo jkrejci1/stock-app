@@ -17,7 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 using api.Dtos.Stock; //Need to bring this in to use our Dtos so we can fully use everything involving them
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using api.Interfaces; //Bring in interface folder data
+using api.Interfaces;
+using api.Helpers; //Bring in interface folder data
 
 //REMEMBER TO NEVER FORGET ;'s OR YOU MIGHT GET AN ERROR USING "dotnet watch run"
 namespace api.Controllers
@@ -44,14 +45,14 @@ namespace api.Controllers
         //This will be for getting every stock we need
         [HttpGet] //Putting this here marks the next function (IActionResult) as an HttpGet method which is why we put this here
         //Action result is for handeling returning api endpoint stuff and knowing that we are doing that easier
-        public async Task<IActionResult> GetAll() {
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query) { //Use query to filter what we want from the sql ToList "gun" ([FromQuery] allows us to insert query parameters in the route --> (example: https://localhost:3000/api?symbol=tsla) --> everything after the ? is the query (using key value pairs))
             //Checks if our validation is correct in our dtos before running our code
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
                 
             //.ToList() is needed because of deffered execution (the evaluation of this is delayed until its realized value is actually required to improve performance by preventing unnecessary execution)
             //So this action is only executed when we need stocks for something when using data, not when this code itself here executes but if we call stocks somewhere else
-            var stocks = await _stockRepo.GetAllAsync(); //Access Stocks value in ApplicationDBContext using async to access data in the background of our program running (using the according method in our Repository)
+            var stocks = await _stockRepo.GetAllAsync(query); //Access Stocks value in ApplicationDBContext using async to access data in the background of our program running (using the according method in our Repository)
             var stockDto = stocks.Select(s => s.ToStockDto()); //.NETs version of a map like in React --> returns a immutable array of the ToStockDto. So then we get a list of data according to our dto mapping of what exactly should and shouldn't be returned. (REQUIRED TO USE SELECT IF YOU WANT TO GET DATA IN A LIST/ARRAY ACCORDING TO A DTO)!! (SO s == each individual stock table data where s == 0 will be the first one and s == 1 will be the second one and so on like in a for loop and will put them all in a list called stocks--> then we will take each s (stock data) and transform the data using the dto we want to use for this situation to make sure we get the NEEDED data only)
             
             return Ok(stockDto);
