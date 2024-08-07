@@ -61,5 +61,23 @@ namespace api.Repository
             //Return all the comments that match the id
             return await _context.Comments.FindAsync(id);
         }
+
+        //Method for updating a comment, and we find the comment to update using its id
+        public async Task<Comment?> UpdateAsync(int id, Comment commentModel)
+        {
+            var existingComment = await _context.Comments.FindAsync(id);
+
+            if (existingComment == null)
+            {
+                return null;
+            }
+
+            existingComment.Title = commentModel.Title;
+            existingComment.Content = commentModel.Content;
+
+            await _context.SaveChangesAsync();
+
+            return existingComment;
+        }
     }
 }

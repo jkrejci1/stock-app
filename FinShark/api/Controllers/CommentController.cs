@@ -36,7 +36,7 @@ namespace api.Controllers
             return Ok(commentDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")] //The :int --> Checks if the data given really is an int for data checking purposes
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             //Use our method from our comment repo file
@@ -52,7 +52,7 @@ namespace api.Controllers
         }
 
         //Post for creating comments (remember we will also need the stockId for the whichever stock the comment is going to be on!)
-        [HttpPost("{stockId}")]
+        [HttpPost("{stockId:int}")]
         public async Task<IActionResult> Create([FromRoute] int stockId, CreateCommentDto commentDto) 
         {
             //If the stock doesn't exist for this comment, cancel out of it
@@ -68,9 +68,27 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = commentModel }, commentModel.ToCommentDto());
         }
 
+        //Method for updating a comment
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateDto)
+        {
+            
+            //See if you can find the comment to update
+            var comment = await _commentRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate(id));
+
+            if (comment == null)
+            {
+                return NotFound("Comment not found");
+            }
+
+            //If it was possible, it would be updated, and we return the current comment as a dto as validation
+            return Ok(comment.ToCommentDto());
+        }
+
         //Delete method for deleting comments
         [HttpDelete]
-        [Route("{id}")] //Need the id to delete it
+        [Route("{id:int}")] //Need the id to delete it
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             //If the commentModel existed it will be deleted and return a val, if not it will return null
