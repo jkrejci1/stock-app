@@ -9,6 +9,7 @@ namespace api.Mappers
 {
     public static class CommentMappers
     {
+        //Mapper for reading
         public static CommentDto ToCommentDto(this Comment commentModel) {
             return new CommentDto {
                 Id = commentModel.Id,
@@ -16,6 +17,16 @@ namespace api.Mappers
                 Content = commentModel.Content,
                 CreatedOn = commentModel.CreatedOn,
                 StockId = commentModel.StockId
+            };
+        }
+
+        //Mapper for creating comment --> where we put in the title, content, and stockId ourselves, and everything else is handled automatically
+        //Id, and createdOn get's created automatically under the hood, so what's important is the title, content, and the StockId we need to match the comment to a stock with
+        public static Comment ToCommentFromCreate(this CreateCommentDto commentDto, int stockId) {
+            return new Comment {
+                Title = commentDto.Title,
+                Content = commentDto.Content,
+                StockId = stockId
             };
         }
     }

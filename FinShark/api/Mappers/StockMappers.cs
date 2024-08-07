@@ -36,6 +36,7 @@ namespace api.Mappers
         //When we send data to the database it has to be of type of the database as it wouldn't be a dto type
         //When sending data to the model with dto, type the dto as the same name as the model you're sending said data to
         //VERY IMPORTANT because ToStockFromCreateDTO is an extension of the type CreateStockRequestDto we can 'dot' into it using whatever would be your CreateStockRequestDto typed variable like in the controller when we do it
+        //We don't add comments with the dto, because comments will be added from the comment controller
         public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockDto) //Extends the CreateStockRequestDto in Dtos-->CreateStockRe... and call it stockDto
         {
             //The type of the method is the Model itself when pushing/updating data, and it's the DTO when getting data it seems

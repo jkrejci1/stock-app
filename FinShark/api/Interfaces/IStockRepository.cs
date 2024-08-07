@@ -26,5 +26,6 @@ namespace api.Interfaces
         Task<Stock> CreateAsync(Stock stockModel);
         Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto);
         Task<Stock?> DeleteAsync(int id);
+        Task<bool> StockExists(int id); //Holder for a method that will check if the stock exists (good check for when creating comments)
     }
 }

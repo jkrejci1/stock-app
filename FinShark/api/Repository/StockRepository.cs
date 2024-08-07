@@ -65,6 +65,11 @@ namespace api.Repository
             return await _context.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id); //Same as include above where i is true (done) if its given id == to our id we want to search with
         }
 
+        public Task<bool> StockExists(int id)
+        {
+            return _context.Stocks.AnyAsync(s => s.Id ==id); //Returns true if the stock exists (matches our given id to the id of every stock in the database until it is found (returns null if not found))
+        }
+
         //Method for the update
         public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
         {
