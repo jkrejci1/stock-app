@@ -29,6 +29,26 @@ namespace api.Repository
             return commentModel;
         }
 
+        //Deletes comment by its id
+        public async Task<Comment?> DeleteAsync(int id)
+        {
+            //See if the comment exists by its id (it will either be == to the stock that has that id, or it will be null)
+            var commentModel = await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
+
+            //Check to make sure if it exists
+            if(commentModel == null) 
+            {
+                return null;
+            }
+
+            //If the comment existed, delete it and save the database
+            _context.Comments.Remove(commentModel);
+            await _context.SaveChangesAsync();
+
+            //Return the commentModel to confirm that it was deleted
+            return commentModel;
+        }
+
         //Gets all comments and puts in list
         public async Task<List<Comment>> GetAllAsync()
         {

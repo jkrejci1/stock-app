@@ -31,7 +31,7 @@ namespace api.Controllers
             var comments = await _commentRepo.GetAllAsync();
 
             //Like a JS map, returns a new data structure instead of manipulating the actual one
-            var commentDto = comments.Select(s => s.ToCommentDto());
+            var commentDto = comments.Select(s => s.ToCommentDto()); //For every object in the database we are getting we will turn it into the DTO version for our display
 
             return Ok(commentDto);
         }
@@ -66,6 +66,24 @@ namespace api.Controllers
 
             //Return the DTO version of the comment, we will find it by its id
             return CreatedAtAction(nameof(GetById), new { id = commentModel }, commentModel.ToCommentDto());
+        }
+
+        //Delete method for deleting comments
+        [HttpDelete]
+        [Route("{id}")] //Need the id to delete it
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            //If the commentModel existed it will be deleted and return a val, if not it will return null
+            var commentModel = await _commentRepo.DeleteAsync(id);
+
+            //If it didn't exist, return a NotFound() error message
+            if(commentModel == null)
+            {
+                return NotFound("Comment does not exist!");
+            }
+
+            //If it existed and was deleted, then return that model for confirmation
+            return Ok(commentModel);
         }
     }
 }
