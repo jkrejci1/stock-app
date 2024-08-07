@@ -10,6 +10,8 @@ namespace api.Dtos.Stock
 {
     public class StockDto
     {
+        //WE DON'T USE THIS FOR USERS TO ENTER DATA, SO WE DON'T NEED DATA VALIDATION HERE!!
+        
         //Use Id's to identify things (the public key)
         public int Id { get; set; }
         //Can also identify with a symbol (also need to start it with an empty string to prevent null reference errors)

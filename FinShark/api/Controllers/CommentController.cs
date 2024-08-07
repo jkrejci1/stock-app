@@ -28,6 +28,13 @@ namespace api.Controllers
         //Get method for getting comments
         [HttpGet]
         public async Task<IActionResult> GetAll() {
+
+            //Checks if our validation is correct in our dtos before running our code
+            //ModelState is inhereting from controller base object
+            //We might not have it in gets, but it's good practice to keep it incase you want validation later
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var comments = await _commentRepo.GetAllAsync();
 
             //Like a JS map, returns a new data structure instead of manipulating the actual one
@@ -39,6 +46,10 @@ namespace api.Controllers
         [HttpGet("{id:int}")] //The :int --> Checks if the data given really is an int for data checking purposes
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             //Use our method from our comment repo file
             var comment = await _commentRepo.GetByIdAsync(id);
 
@@ -55,6 +66,10 @@ namespace api.Controllers
         [HttpPost("{stockId:int}")]
         public async Task<IActionResult> Create([FromRoute] int stockId, CreateCommentDto commentDto) 
         {
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             //If the stock doesn't exist for this comment, cancel out of it
             if(!await _stockRepo.StockExists(stockId)) {
                 return BadRequest("Stock doesn't exist!"); //If we couldn't find a stock with the given stockId, then that stock doesn't exist
@@ -73,7 +88,10 @@ namespace api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateDto)
         {
-            
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             //See if you can find the comment to update
             var comment = await _commentRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate(id));
 
@@ -91,6 +109,10 @@ namespace api.Controllers
         [Route("{id:int}")] //Need the id to delete it
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             //If the commentModel existed it will be deleted and return a val, if not it will return null
             var commentModel = await _commentRepo.DeleteAsync(id);
 

@@ -45,6 +45,10 @@ namespace api.Controllers
         [HttpGet] //Putting this here marks the next function (IActionResult) as an HttpGet method which is why we put this here
         //Action result is for handeling returning api endpoint stuff and knowing that we are doing that easier
         public async Task<IActionResult> GetAll() {
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             //.ToList() is needed because of deffered execution (the evaluation of this is delayed until its realized value is actually required to improve performance by preventing unnecessary execution)
             //So this action is only executed when we need stocks for something when using data, not when this code itself here executes but if we call stocks somewhere else
             var stocks = await _stockRepo.GetAllAsync(); //Access Stocks value in ApplicationDBContext using async to access data in the background of our program running (using the according method in our Repository)
@@ -55,9 +59,13 @@ namespace api.Controllers
 
         //This will return one actual item unlike above as it selects a specific item by its original ID value
         //This will get one specific stock to go through the specific details for that one stock itself on its own page
-        [HttpGet("{id}")] //>NET will take this, turn it into an int below, and then we can use it below in our actual code
+        [HttpGet("{id:int}")] //>NET will take this, turn it into an int below, and then we can use it below in our actual code
         //I action result is a return method --> wrapper so that when you return something from the api you dont have to go through to much coding to tell someone what status of their endpoint is or errors like http errors
         public async Task<IActionResult> GetById([FromRoute] int id) {  //This takes the id from above and turns it into an int
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             var stock = await _stockRepo.GetByIdAsync(id); //Searches in table by the id value
 
             //Null Check to see if stock is null (dont have something for the requested stock)
@@ -73,6 +81,10 @@ namespace api.Controllers
         [HttpPost]
         //Need this from body as our data is going to be sent in JSON and use our dto as there is some data that we wouldn't want from the user (like our database assigns an ID for a stock, so we wouldn't want the user to send data for the ID as that wouldn't make sense and could cause errors)
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto) { //Unlike above we aren't gonna have all this JSON be passed in the URL, that wouldn't make sense, instead it will be passed in the body of the HTTP (like in HTTP requests (used this in JavaScript projects before when passing user data to MongoDB with their accounts and saved data to those accounts)) so select that data using '[FromBody]'
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             //Take stockModel and have it == to our stockDto and use the method for it that transforms it back into a stock model using our mapper for putting data in the database
             var stockModel = stockDto.ToStockFromCreateDTO(); //Like in the GetById, we are using api.mappers, where we made an extension to createStockRequestDto to have the method ToStockFromCreateDTO extended to it which is why we can use it her
             await _stockRepo.CreateAsync(stockModel);
@@ -85,8 +97,12 @@ namespace api.Controllers
         //
         //ID goes with the route, and we also got our body to work with
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto) {
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             //We first need to search if we actually have that thing to update and track it
             //x would be our parameter where we'd access the Id of the stock we're looking at, and returns true if that Id == to the id of our Route"[id]" that was sent in the url for what we want to update in this method (so if it's true, then stockModel will be == to the stock in our database that is identified by that Id!!)
             var stockModel = await _stockRepo.UpdateAsync(id, updateDto);
@@ -102,8 +118,12 @@ namespace api.Controllers
 
         //Delete api endpoint method for deleting a stock by its ID
         [HttpDelete]
-        [Route("{id}")] //Need a route in order to find something remember
+        [Route("{id:int}")] //Need a route in order to find something remember
         public async Task<IActionResult> Delete([FromRoute] int id) {
+            //Checks if our validation is correct in our dtos before running our code
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+                
             //Make sure that this stock exists firsts
                                                             //x where x.id is == id
             var stockModel = await _stockRepo.DeleteAsync(id);

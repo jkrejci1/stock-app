@@ -30,7 +30,7 @@ namespace api.Mappers
             };
         }
 
-        //Mapper for doing the update of a comment
+        //Mapper for doing the update of a comment. The only changeable data would be the same as the data that we would need from the user themself to created one, like the mapper method above
         public static Comment ToCommentFromUpdate(this UpdateCommentRequestDto commentDto, int stockId)
         {
             return new Comment

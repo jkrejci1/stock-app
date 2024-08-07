@@ -65,6 +65,7 @@ namespace api.Repository
         //Method for updating a comment, and we find the comment to update using its id
         public async Task<Comment?> UpdateAsync(int id, Comment commentModel)
         {
+            //Find the comment by its id
             var existingComment = await _context.Comments.FindAsync(id);
 
             if (existingComment == null)
@@ -72,11 +73,14 @@ namespace api.Repository
                 return null;
             }
 
+            //If we found the comment by its id, switch its title and content to what the user will change it to
             existingComment.Title = commentModel.Title;
             existingComment.Content = commentModel.Content;
 
+            //Save the updated changes
             await _context.SaveChangesAsync();
 
+            //Return the comment in its new form as validation
             return existingComment;
         }
     }

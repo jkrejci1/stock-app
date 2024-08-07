@@ -7,6 +7,8 @@ namespace api.Dtos.Comment
 {
     public class CommentDto
     {
+        //THE USER ISN'T ENTERING DATA INTO THE DATABASE WHEN THIS IS USED, SO WE DON'T NEED DATA VALIDATION HERE!!
+        
         //It seems per the syntax for sql server that our first row will be the public key so Id will be the public key
         public int Id { get; set; } //ID for unique selection like in our other stock model THE PRIMARY KEY THEN!!
         public string Title { get; set; } = string.Empty; //Title for our comments
