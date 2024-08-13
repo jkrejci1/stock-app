@@ -2,7 +2,10 @@ using api.Data;
 using api.Interfaces; //Bring in interface folder to allow our program to use it
 using api.Models;
 using api.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,32 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); //Search within our app settings json
 });
 
+//Add our user model stuff for user profile data
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
+    options.Password.RequireDigit = true; //Requires saved passwords to contain numbers
+    options.Password.RequireLowercase = true; //Requires lower case letters
+    options.Password.RequireUppercase = true; //Require uppercase
+    options.Password.RequireNonAlphanumeric = true; //Require special chars
+    options.Password.RequiredLength = 12; //Password must at least have a length of 12 chars
+})
+.AddEntityFrameworkStores<ApplicationDBContext>(); //This is connected to the builder above, adds the entity framework for it
+
+//Used to add JWT schema
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = 
+    options.DefaultChallengeScheme = 
+    options.DefaultForbidScheme = 
+    options.DefaultScheme = 
+    options.DefaultSignInScheme = 
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+    //Token validation params
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"] //Deployment stuff is inappsettings.json regarding this stuff, and NEED TO POSSIBLY EDIT THIS WHEN TRYING TO DEPLOY THIS TO SOMETHING LIKE AZURE OR AWS (KEEP AND EYE OUT!!) issuer == the server, audience == whoevers using the app, SigningKey == IMPROTANT --> the secret that signs JWT tokens (NEEDS TO BE HIDDEN AND SECURE)
+    };
+});
 //Allows us to use the interfaces in our program
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();

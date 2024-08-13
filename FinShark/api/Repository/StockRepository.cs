@@ -86,7 +86,7 @@ namespace api.Repository
 
             //Return the stocks that should be returned according to any possible query filtering
             return await stocks.Skip(skipNumber).Take(query.PageSize).ToListAsync();
-        }
+    }
 
         //Method for the get by id
         public async Task<Stock?> GetByIdAsync(int id)
@@ -97,7 +97,7 @@ namespace api.Repository
 
         public Task<bool> StockExists(int id)
         {
-            return _context.Stocks.AnyAsync(s => s.Id ==id); //Returns true if the stock exists (matches our given id to the id of every stock in the database until it is found (it returns true not because it is == to true, but because it contains a value it would be true!!) (returns null if not found))
+            return _context.Stocks.AnyAsync(s => s.Id == id); //Returns true if the stock exists (matches our given id to the id of every stock in the database until it is found (it returns true not because it is == to true, but because it contains a value it would be true!!) (returns null if not found))
         }
 
         //Method for the update

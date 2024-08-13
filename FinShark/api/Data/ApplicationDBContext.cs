@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
 {
     //Class inherits from our DBContext which will bring in stuff to search our tables
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<AppUser> //IdentityDb takes in our AppUser class to know when we are switching to that specific model
     {
         //Constructor ctor<tab> for the quick snippet
         public ApplicationDBContext(DbContextOptions dbContextOptions) //We'll have a type DbContextOptions called dbContextOptions
