@@ -51,7 +51,13 @@ builder.Services.AddAuthentication(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["JWT:Issuer"] //Deployment stuff is inappsettings.json regarding this stuff, and NEED TO POSSIBLY EDIT THIS WHEN TRYING TO DEPLOY THIS TO SOMETHING LIKE AZURE OR AWS (KEEP AND EYE OUT!!) issuer == the server, audience == whoevers using the app, SigningKey == IMPROTANT --> the secret that signs JWT tokens (NEEDS TO BE HIDDEN AND SECURE)
+        ValidIssuer = builder.Configuration["JWT:Issuer"], //Deployment stuff is inappsettings.json regarding this stuff, and NEED TO POSSIBLY EDIT THIS WHEN TRYING TO DEPLOY THIS TO SOMETHING LIKE AZURE OR AWS (KEEP AND EYE OUT!!) issuer == the server, audience == whoevers using the app, SigningKey == IMPROTANT --> the secret that signs JWT tokens (NEEDS TO BE HIDDEN AND SECURE)
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey( //Encrypt the signing key
+            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]) //Grabs the signing key from our app settings json file
+        )
     };
 });
 //Allows us to use the interfaces in our program
@@ -70,6 +76,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//Use authentication and authorization for validation
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers(); //HTTPS redirect error fix
 
