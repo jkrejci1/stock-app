@@ -44,6 +44,7 @@ namespace api.Controllers
         //Get is a read --> getting it out of a DB and r
         //This will be for getting every stock we need
         [HttpGet] //Putting this here marks the next function (IActionResult) as an HttpGet method which is why we put this here
+        [Authorize] //For authorizing JWT data with our tokens
         //Action result is for handeling returning api endpoint stuff and knowing that we are doing that easier
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query) { //Use query to filter what we want from the sql ToList "gun" ([FromQuery] allows us to insert query parameters in the route --> (example: https://localhost:3000/api?symbol=tsla) --> everything after the ? is the query (using key value pairs))
             //Checks if our validation is correct in our dtos before running our code

@@ -20,11 +20,43 @@ namespace api.Controllers
         //UserManager == contains the required methods to manage users in the underlying data store
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly SignInManager<AppUser> _signinManager;
 
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _signinManager = signInManager;
+        }
+
+        //Post method for logging a current user in
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            //Find the user
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+
+            //Check if we have user
+            if (user == null) return Unauthorized("Invald username!");
+
+            //If we have a user, sign in the user
+            var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false); //False is for lockout on failure, we turned it off for now
+
+            //If we failed to login
+            if(!result.Succeeded) return Unauthorized("Username not found and/or password incorrect!");
+
+            //
+            return Ok(
+                new NewUserDto
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Token = _tokenService.CreateToken(user)
+                }
+            );
         }
 
         //Post method for registering a user to our database
@@ -35,7 +67,7 @@ namespace api.Controllers
             try {
                 //Validation error check first
                 if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+                    return BadRequest(ModelState);
 
                 //Create a user object with the new users username and email from our dto
                 var appUser = new AppUser

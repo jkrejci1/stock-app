@@ -4688,11 +4688,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Jack\\stock-app\\FinShark\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\Jack\\stock-app\\FinShark\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "c:\\Users\\Jack\\stock-app\\FinShark\\api\\api.csproj",
+      "projectPath": "C:\\Users\\Jack\\stock-app\\FinShark\\api\\api.csproj",
       "packagesPath": "C:\\Users\\Jack\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Jack\\stock-app\\FinShark\\api\\obj\\",
+      "outputPath": "C:\\Users\\Jack\\stock-app\\FinShark\\api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4795,7 +4795,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
