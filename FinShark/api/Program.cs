@@ -2,6 +2,7 @@ using api.Data;
 using api.Interfaces; //Bring in interface folder to allow our program to use it
 using api.Models;
 using api.Repository;
+using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,8 @@ builder.Services.AddAuthentication(options => {
 //Allows us to use the interfaces in our program
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+//Add the dependency injection
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 
 var app = builder.Build();

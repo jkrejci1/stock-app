@@ -19,10 +19,12 @@ namespace api.Controllers
     {
         //UserManager == contains the required methods to manage users in the underlying data store
         private readonly UserManager<AppUser> _userManager;
+        private readonly ITokenService _tokenService;
 
-        public AccountController(UserManager<AppUser> userManager)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         //Post method for registering a user to our database
@@ -53,7 +55,15 @@ namespace api.Controllers
                     //If we successfully created the user and their role (privliges), then return an ok message, if not, return error message
                     if(roleResult.Succeeded)
                     {
-                        return Ok("User Created");
+                        return Ok(
+                            //Return data of the user and their token when registered
+                            new NewUserDto
+                            {
+                                UserName = appUser.UserName,
+                                Email = appUser.Email,
+                                Token = _tokenService.CreateToken(appUser)
+                            }
+                        );
                     }
                     else
                     {
