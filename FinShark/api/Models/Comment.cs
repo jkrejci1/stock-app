@@ -1,11 +1,14 @@
 //Model for the Comment Schema data
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace api.Models
 {
+    //Add the table names
+    [Table ("Comments")]
     public class Comment
     {
         //It seems per the syntax for sql server that our first row will be the public key so Id will be the public key

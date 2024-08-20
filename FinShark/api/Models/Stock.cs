@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
+    [Table ("Stocks")]
     public class Stock
     {
         //Use Id's to identify things (the public key)
@@ -41,5 +42,8 @@ namespace api.Models
         //As you can see from the comment model then, this will be tied in from the StockId (The Id for Stock model will be the primary key for the foreign key Comments here then) (Stock using StockId is the parent of the Comments foreign key)
         //We know that there's gonna be more than 1 comment per stock, so to access all of them we'll use the C# list data structure (like lists in Python)
         public List<Comment> Comments { get; set; } = new List<Comment>(); //This doesn't show up in the db itself as a foriegn key but you'll see the comments foriegn key in the comment table instead if you want to see if it exists
+    
+        //The portfolios together
+        public List<Portfolio> Portfolios {get; set;} = new List<Portfolio>();
     }
 }

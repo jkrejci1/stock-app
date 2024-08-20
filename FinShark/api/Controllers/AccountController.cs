@@ -48,7 +48,7 @@ namespace api.Controllers
             //If we failed to login
             if(!result.Succeeded) return Unauthorized("Username not found and/or password incorrect!");
 
-            //
+            //Return our user data as a dto
             return Ok(
                 new NewUserDto
                 {

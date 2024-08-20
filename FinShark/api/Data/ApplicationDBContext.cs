@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Migrations;
+//using api.Migrations;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -33,10 +33,27 @@ namespace api.Data
         //Creates a table called Comments in our data base where the type of it will be the name of the class for our Comment Model (The data type needs to be named after the class (comment in this case) but we can name the table anything, best practice to do it like this though)
         public DbSet<Comment> Comments { get; set; } //This and above are the Stock and Comments table linking the DB to the code
     
+        //For the portfolios table
+        public DbSet<Portfolio> Portfolios { get; set; }
+
         //Create roles for user (user and admin roles/priviliges)
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            //For on model creating for the join table of the users and stocks
+            builder.Entity<Portfolio>(x=> x.HasKey(p => new {p.AppUserId, p.StockId}));
+            //Connected the foriegn keys above to the table
+            builder.Entity<Portfolio>()
+                .HasOne(u => u.AppUser)
+                .WithMany(u => u.Portfolios)
+                .HasForeignKey(p=> p.AppUserId);
+
+            //Connected the foriegn keys above to the table
+            builder.Entity<Portfolio>()
+                .HasOne(u => u.Stock)
+                .WithMany(u => u.Portfolios)
+                .HasForeignKey(p=> p.StockId);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

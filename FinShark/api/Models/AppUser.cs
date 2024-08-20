@@ -10,6 +10,7 @@ namespace api.Models
     //Inherits idenity user that is a given class that gives us functionality with auth and profile data
     public class AppUser : IdentityUser
     {
-        
+        //The portfolios together
+        public List<Portfolio> Portfolios {get; set;} = new List<Portfolio>();
     }
 }
