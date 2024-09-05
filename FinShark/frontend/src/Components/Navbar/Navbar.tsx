@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import logo from "./logo.png";
+import logo from "./logo1.png";
 
 interface Props {}
 
