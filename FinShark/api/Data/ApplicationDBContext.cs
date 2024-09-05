@@ -43,13 +43,13 @@ namespace api.Data
 
             //For on model creating for the join table of the users and stocks
             builder.Entity<Portfolio>(x=> x.HasKey(p => new {p.AppUserId, p.StockId}));
-            //Connected the foriegn keys above to the table
+            //Connected the foriegn keys above to the table (for the users)
             builder.Entity<Portfolio>()
                 .HasOne(u => u.AppUser)
                 .WithMany(u => u.Portfolios)
                 .HasForeignKey(p=> p.AppUserId);
 
-            //Connected the foriegn keys above to the table
+            //Connected the foriegn keys above to the table (for the stocks)
             builder.Entity<Portfolio>()
                 .HasOne(u => u.Stock)
                 .WithMany(u => u.Portfolios)

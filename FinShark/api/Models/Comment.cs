@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
-    //Add the table names
+    //Add the table names from the databases
     [Table ("Comments")]
     public class Comment
     {

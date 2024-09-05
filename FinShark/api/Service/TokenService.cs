@@ -29,6 +29,7 @@ namespace api.Service
             //Used to identify the user and express what they can and can't do like a role
             var claims = new List<Claim>
             {
+                //Given to our claims
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
             };
