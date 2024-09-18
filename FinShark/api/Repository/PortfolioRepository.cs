@@ -17,6 +17,14 @@ namespace api.Repository
             _context = context;
         }
 
+        //Add the new portfolio to the portfolio database and save it
+        public async Task<Portfolio> CreateAsync(Portfolio portfolio)
+        {
+            await _context.Portfolios.AddAsync(portfolio);
+            await _context.SaveChangesAsync();
+            return portfolio; //Return the portfolio for confirmation
+        }
+
         //Method for getting the full portfolio for the specified user
         public async Task<List<Stock>> GetUserPortfolio(AppUser user)
         {
