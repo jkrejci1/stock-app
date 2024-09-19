@@ -30,10 +30,10 @@ namespace api.Controllers
 
         //Get the portfolio data for the user
         [HttpGet]
-        [Authorize]
+        [Authorize] //You'll want Authorize when you're going to be using claims
         public async Task<IActionResult> GetUserPortfolio()
         {
-            var username = User.GetUsername(); //User object allows you to reach in and grab what's in the user from token data (the token data you'd see in inspecting the code on the webpage, if you console logged the token there you would see all sorts of that kind of data)
+            var username = User.GetUsername(); //User object allows you to reach in and grab what's in the user from token data (the token data you'd see in inspecting the code on the webpage, if you console logged the token there you would see all sorts of that kind of data) EXTENDED WITH THE ControllerBase CLASS
             var appUser = await _userManager.FindByNameAsync(username); //Get the user
             var userPortfolio = await _portfolioRepo.GetUserPortfolio(appUser);//Find the user portfolio by going into the DB and pull the records associated with the user that's logged in from the data we got from the claims, then return the stocks associated with that user
 
@@ -76,6 +76,35 @@ namespace api.Controllers
             {
                 return Created();
             }
+        }
+
+        //Delete a stock in portfolio method
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeletePortfolio(string symbol)
+        {
+            //Get the user name associated with the user
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
+
+            //Go get all of the stocks in the user portfolio
+            var userPortfolio = await _portfolioRepo.GetUserPortfolio(appUser);
+
+            //Compare the user portfolio with the symbol passed into the API endpoint and filter it out and see if it's there
+            var filterStock = userPortfolio.Where(s => s.Symbol.ToLower() == symbol.ToLower()).ToList();
+
+            //If there is something in the list, then the portfolio exists so let's delete it
+            if(filterStock.Count() == 1)
+            {
+                await _portfolioRepo.DeletePortfolio(appUser, symbol);
+            }
+            else //If the filtered stock is not there send a bad request message
+            {
+                return BadRequest("Stock is not in your portfolio!");
+            }
+
+            //If we got here then it should've been deleted with no problems --> Return an "Ok" message
+            return Ok();
         }
     }
 }

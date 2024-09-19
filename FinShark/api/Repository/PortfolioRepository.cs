@@ -25,6 +25,25 @@ namespace api.Repository
             return portfolio; //Return the portfolio for confirmation
         }
 
+        //Method for deleting a portfolio
+        public async Task<Portfolio> DeletePortfolio(AppUser appUser, string symbol)
+        {
+            //Grab the portfolio by checking if the symbol mathces the user ID and the stock symbol
+            //Grabs AppUserIds from each object in our database and compares it to the appUser's ID that we sent over here as a parameter
+            var portfolioModel = await _context.Portfolios.FirstOrDefaultAsync(x => x.AppUserId == appUser.Id && x.Stock.Symbol.ToLower() == symbol.ToLower());
+
+            //Null check
+            if(portfolioModel == null)
+            {
+                return null;
+            }
+
+            //If it exists remove it and save the database
+            _context.Portfolios.Remove(portfolioModel);
+            await _context.SaveChangesAsync();
+            return portfolioModel; //Return the portfolio model as a check to show that it worked.
+        }
+
         //Method for getting the full portfolio for the specified user
         public async Task<List<Stock>> GetUserPortfolio(AppUser user)
         {

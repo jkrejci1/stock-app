@@ -27,11 +27,12 @@ namespace api.Service
         {
             //Put the claims within our tokens (like email, username, timezone, etc)
             //Used to identify the user and express what they can and can't do like a role
+            //These are the claims we are reaching into for when we use claims in the Portfolio for example
             var claims = new List<Claim>
             {
                 //Given to our claims
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
+                new Claim(JwtRegisteredClaimNames.Email, user.Email), //We have Email
+                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName) //We have UserName, which we grab when looking for a user in our Portfolio code for example ==> GivenName puts it as UserName which allows us to access that claim by using GetUsername in the portfolio code for example
             };
 
             //Create the signing credentials (type of encrytption we want to use)
