@@ -33,9 +33,9 @@ namespace api.Controllers
         [Authorize] //You'll want Authorize when you're going to be using claims
         public async Task<IActionResult> GetUserPortfolio()
         {
-            var username = User.GetUsername(); //User object allows you to reach in and grab what's in the user from token data (the token data you'd see in inspecting the code on the webpage, if you console logged the token there you would see all sorts of that kind of data) EXTENDED WITH THE ControllerBase CLASS
-            var appUser = await _userManager.FindByNameAsync(username); //Get the user
-            var userPortfolio = await _portfolioRepo.GetUserPortfolio(appUser);//Find the user portfolio by going into the DB and pull the records associated with the user that's logged in from the data we got from the claims, then return the stocks associated with that user
+            var username = User.GetUsername(); //User object allows you to reach in and grab what's in the user from token data (the token data you'd see in inspecting the code on the webpage, if you console logged the token there you would see all sorts of that kind of data) Takes the data within the HTTP context EXTENDED WITH THE ControllerBase CLASS
+            var appUser = await _userManager.FindByNameAsync(username); //Get the user using what we got from the claims
+            var userPortfolio = await _portfolioRepo.GetUserPortfolio(appUser);//Find the user portfolio by going into the DB and pull the records associated with the user that's logged in from the data we got from the claims, then return the stocks associated with that user (as usual use a repository that inherits an interface when reaching for it in the database)
 
             return Ok(userPortfolio); //Now return the user portfolio data!
         }
