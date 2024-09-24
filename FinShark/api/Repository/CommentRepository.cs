@@ -49,17 +49,18 @@ namespace api.Repository
             return commentModel;
         }
 
-        //Gets all comments and puts in list
+        //Gets all comments and puts in list (need the "Include()" part for adding the username to the comment for the one to one relationship because of differed execution)
         public async Task<List<Comment>> GetAllAsync()
         {
-            return await _context.Comments.ToListAsync();
+            return await _context.Comments.Include(a => a.AppUser).ToListAsync();
         }
 
         //Gets a comment by its id
         public async Task<Comment?> GetByIdAsync(int id)
         {
             //Return all the comments that match the id
-            return await _context.Comments.FindAsync(id);
+            //FirstOrDefault async is an ASP.NET extension for digging into the database remember!
+            return await _context.Comments.Include(a => a.AppUser).FirstOrDefaultAsync(c => c.Id == id); //Get the comment that has the id matching the given id in the parameter (switched to using FirstOrDefault here so we can use our one to one model relationship with including the user that created the comment (before we used FindAsync(id)))
         }
 
         //Method for updating a comment, and we find the comment to update using its id

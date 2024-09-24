@@ -14,7 +14,7 @@ namespace api.Dtos.Comment
         public string Title { get; set; } = string.Empty; //Title for our comments
         public string Content { get; set; } = string.Empty; //Content
         public DateTime CreatedOn { get; set; } = DateTime.Now; //Whenever this data is created and this will be set to the exact time it was created
-        
+        public string CreatedBy { get; set; } = string.Empty;
         //Linking relationships within the comment using CONVENTION --> .NET Core will form relationships for us NEED BOTH BELOW
         //Creates a StockId foreign key in the Comment table and uses Stock to access its properties
         public int? StockId { get; set; } //Key to form the relationship within the database (REMEMBER --> THIS IS SUPPOSSED TO BE AN ID THAT MATCHES WITH THE SEPERATE STOCK ID PARENT SO WE CAN ACCESS COMMENT CHILDREN FOR A STOCK) (SO THEN, THE FOREIGN KEY ITSELF NEEDS TO BE IN THE CHILD TABLE FOR THIS TO WORK REMEMBER!)

@@ -56,7 +56,7 @@ namespace api.Repository
         //Now that we have abstracted our code doing this, whatever uses this method in the controller can all be modified at once (for whatever would cause such a change in this function) --> DEPENDENCY INJECTION
         public async Task<List<Stock>> GetAllAsync(QueryObject query) {
             //Return all the stock data according to our query
-            var stocks = _context.Stocks.Include(c => c.Comments).AsQueryable(); //Does the usual, but to get our comments (foreign key relationship) we need to use include
+            var stocks = _context.Stocks.Include(c => c.Comments).ThenInclude(a => a.AppUser).AsQueryable(); //Does the usual, but to get our comments (foreign key relationship) we need to use include
 
             //If we have a company name query to filter, then only find stocks that contain that company name
             if(!string.IsNullOrWhiteSpace(query.CompanyName))
@@ -91,7 +91,7 @@ namespace api.Repository
         //Method for the get by id
         public async Task<Stock?> GetByIdAsync(int id)
         {
-            //Return all the stocks that mathc the id
+            //Return all the stocks that match the id (use ThenInclude to put in the nested object in this model, which will be the AppUser so we can have the data associated with the person who created a comment on the stock tied to the comment on the stock itself)
             return await _context.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id); //Same as include above where i is true (done) if its given id == to our id we want to search with
         }
 

@@ -19,13 +19,16 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IStockRepository _stockRepo;
         private readonly IPortfolioRepository _portfolioRepo;
+        private readonly IFMPService _fmpService;
 
         public PortfolioController(UserManager<AppUser> userManager,
-        IStockRepository stockRepo, IPortfolioRepository portfolioRepo)
+        IStockRepository stockRepo, IPortfolioRepository portfolioRepo,
+        IFMPService fmpService)
         {
             _userManager = userManager;
             _stockRepo = stockRepo;
             _portfolioRepo = portfolioRepo;
+            _fmpService = fmpService;
         }
 
         //Get the portfolio data for the user
@@ -49,6 +52,19 @@ namespace api.Controllers
             var username = User.GetUsername(); //Claims from current JWT token
             var appUser = await _userManager.FindByNameAsync(username);
             var stock = await _stockRepo.GetBySymbolAsync(symbol);
+
+            if(stock == null)
+            {
+                stock = await _fmpService.FindStockBySymbolAsync(symbol);
+                if(stock == null) //If it fails
+                {
+                    return BadRequest("This stock does not exist!");
+                }
+                else //If it works
+                {
+                    await _stockRepo.CreateAsync(stock);
+                }
+            }
 
             //Check if the stock is even there, and [Authorize] will automatically do that with the user
             if(stock == null) return BadRequest("Stock not found!");

@@ -50,5 +50,20 @@ namespace api.Mappers
                 MarketCap = stockDto.MarketCap
             };
         }
+
+        //For the financial modeling prep stock
+        public static Stock ToStockFromFMP(this FMPStock fmpStock) //Extends the CreateStockRequestDto in Dtos-->CreateStockRe... and call it stockDto
+        {
+            //The type of the method is the Model itself when pushing/updating data, and it's the DTO when getting data it seems
+            return new Stock //This object will be added to our Stock Model as a seperate stock
+            {
+                Symbol = fmpStock.symbol,
+                CompanyName = fmpStock.companyName,
+                Purchase = (decimal)fmpStock.price,
+                LastDiv = (decimal)fmpStock.lastDiv,
+                Industry = fmpStock.industry,
+                MarketCap = fmpStock.mktCap
+            };
+        }
     }
 }
