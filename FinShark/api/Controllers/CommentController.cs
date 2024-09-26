@@ -8,6 +8,7 @@ using api.Interfaces;
 using api.Models;
 using api.Mappers;
 using api.Service;
+using api.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -37,9 +38,10 @@ namespace api.Controllers
             _fmpService = fmpService;
         }
 
-        //Get method for getting comments
+        //Get method for getting comments by a query
         [HttpGet]
-        public async Task<IActionResult> GetAll() {
+        [Authorize]
+        public async Task<IActionResult> GetAll([FromQuery]CommentQueryObject queryObject) {
 
             //Checks if our validation is correct in our dtos before running our code
             //ModelState is inhereting from controller base object
@@ -47,7 +49,7 @@ namespace api.Controllers
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var comments = await _commentRepo.GetAllAsync();
+            var comments = await _commentRepo.GetAllAsync(queryObject);
 
             //Like a JS map, returns a new data structure instead of manipulating the actual one
             var commentDto = comments.Select(s => s.ToCommentDto()); //For every object in the database we are getting we will turn it into the DTO version for our display

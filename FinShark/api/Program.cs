@@ -1,5 +1,5 @@
 using api.Data;
-using api.Interfaces; //Bring in interface folder to allow our program to use it
+using api.Interfaces;
 using api.Models;
 using api.Repository;
 using api.Service;
@@ -114,6 +114,22 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//Implement CORS
+app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                //.WithOrigins("https://localhost:44351))
+                .SetIsOriginAllowed(origin => true));
+
+/**
+app.UseCors(x => x
+     .AllowAnyMethod()
+     .AllowAnyHeader()
+     .AllowCredentials()
+     //.WithOrigins("https://localhost:44351))
+     .SetIsOriginAllowed(origin => true));
+*/
 //Use authentication and authorization for validation
 app.UseAuthentication();
 app.UseAuthorization();

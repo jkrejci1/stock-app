@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Interfaces;
 using api.Models;
+using api.Helpers;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,9 +51,26 @@ namespace api.Repository
         }
 
         //Gets all comments and puts in list (need the "Include()" part for adding the username to the comment for the one to one relationship because of differed execution)
-        public async Task<List<Comment>> GetAllAsync()
+        public async Task<List<Comment>> GetAllAsync(CommentQueryObject queryObject)
         {
-            return await _context.Comments.Include(a => a.AppUser).ToListAsync();
+            //return await _context.Comments.Include(a => a.AppUser).ToListAsync(); FOR IF WE DIDN'T FILTER BY ANTTHING
+
+            //For when we use a queryObject to filter what we want
+            var comments = _context.Comments.Include(a => a.AppUser).AsQueryable();
+        
+            //Check the object --> make sure it matches with the stock correctly so it only shows the comments for that specific stock
+            if(!string.IsNullOrWhiteSpace(queryObject.Symbol))
+            {
+                comments = comments.Where(s => s.Stock.Symbol == queryObject.Symbol);
+            };
+            //Make sure that the comments are always ordered by the most recent first
+            if(queryObject.isDescending == true)
+            {
+                comments = comments.OrderByDescending(c => c.CreatedOn);
+            }
+
+            //Return the correctly given and ordered comments as a list
+            return await comments.ToListAsync();
         }
 
         //Gets a comment by its id
