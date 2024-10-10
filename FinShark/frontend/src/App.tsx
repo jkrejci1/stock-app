@@ -1,4 +1,6 @@
 import { Outlet } from 'react-router';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 import './App.css';
 import Navbar from './Components/Navbar/Navbar';
 
@@ -9,6 +11,7 @@ import Navbar from './Components/Navbar/Navbar';
     <Navbar />
     {/** Outlet is what will display the page under the navbar */}
     <Outlet />
+    <ToastContainer />
   </>;
 }
 
