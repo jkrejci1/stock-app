@@ -119,7 +119,7 @@ app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
-                //.WithOrigins("https://localhost:44351))
+                //.WithOrigins("https://localhost:44351)) THIS IS FOR WHERE YOU SET THE ACTUAL DOMAIN WHEN YOU DEPLOY!!!! WE HAVE TO MESS WITH THIS PART FOR DEPLOYING
                 .SetIsOriginAllowed(origin => true));
 
 /**
