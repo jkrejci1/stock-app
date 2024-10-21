@@ -9,7 +9,7 @@ import { UserProfileToken } from "../Models/User";
 //MIGHT NEED TO PLAY AROUND WITH THIS WHEN ATTEMPTING TO DEPLOY!!
 const api = "http://localhost:5144/api/";
 
-//API call for logging in
+//API call for logging in a user
 export const loginAPI = async (username: string, password: string) => {
   try {
     const data = await axios.post<UserProfileToken>(api + "account/login", {
@@ -22,7 +22,7 @@ export const loginAPI = async (username: string, password: string) => {
   }
 };
 
-//API call for registering
+//API call for registering a user
 export const registerAPI = async (
   email: string,
   username: string,
