@@ -8,7 +8,9 @@ import CompanyPage from "../Pages/CompanyPage/CompanyPage";
 import DesignGuide from "../Pages/DesignGuide/DesignGuide";
 import HomePage from "../Pages/HomePage/HomePage";
 import LoginPage from "../Pages/LoginPage/LoginPage";
+import RegisterPage from "../Pages/RegisterPage/RegisterPage";
 import SearchPage from "../Pages/SearchPage/SearchPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
     //Path --> URL Route, element --> The index.tsx component we want our route to have data access to set up page
@@ -19,7 +21,8 @@ export const router = createBrowserRouter([
         children: [
             {path: "", element: <HomePage />},
             {path: "login", element: <LoginPage />},
-            {path: "search", element: <SearchPage />},
+            {path: "register", element: <RegisterPage />},
+            {path: "search", element: <ProtectedRoute><SearchPage /></ProtectedRoute>}, //This will be a protected route, using our ProtectedRoute.tsx file to swith the page to the login page
             {path: "design-guide", element: <DesignGuide />},
             //The ticker is the company data from the company name abreviation like aapl or msft (it can be anything though from how it works, that's just how we're gonna use it in this case!)
             {
@@ -27,7 +30,7 @@ export const router = createBrowserRouter([
                 //This creates nested routes used for one specific route, creating routes to other pages inside this one page only! COOL!!
                 //RESUME VIDEO 19 AT 8 MINUTE MARK
                 path: "company/:ticker", 
-                element: <CompanyPage />,
+                element: <ProtectedRoute><CompanyPage /></ProtectedRoute>, //Protect all the routes for here using our ProtectedRoute.tsx file to redirect the user to the login page when attempting to go anywhere here
                 children: [
                     { path: "company-profile", element: <CompanyProfile /> },
                     { path: "income-statement", element: <IncomeStatement /> },
