@@ -5,6 +5,7 @@ import { getKeyMetrics } from "../../api";
 import { CompanyKeyMetrics } from "../../company";
 import RatioList from "../RatioList/RatioList";
 import Spinner from "../Spinner/Spinner";
+import StockComment from "../StockComment/StockComment";
 
 type Props = {}
 
@@ -97,7 +98,10 @@ const CompanyProfile = (props: Props) => {
     <>
       {/* Return the company data that should be displayed with a loading spinner later on */}
       { companyData ? (
-        <><RatioList data={companyData} config={tableConfig} /></>
+        <>
+          <RatioList data={companyData} config={tableConfig} />
+          <StockComment stockSymbol={ticker} />
+        </>
       ) : (
         <Spinner />
       )}
