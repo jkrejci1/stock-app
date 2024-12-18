@@ -1,9 +1,12 @@
-import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { searchCompanies } from "../../api";
+import { CompanySearch } from "../../company";
 import CardList from "../../Components/CardList/CardList";
 import ListPortfolio from "../../Components/Portfolio/ListPortfolio/ListPortfolio";
 import Search from "../../Components/Search/Search";
-import { searchCompanies } from "../../api";
-import { CompanySearch } from "../../company";
+import { PortfolioGet } from "../../Models/Portfolio";
+import { portfolioAddAPI, portfolioDeleteAPI, portfolioGetAPI } from "../../Services/PortfolioService";
 
 interface Props {}
 
@@ -13,7 +16,7 @@ const SearchPage = (props: Props) => {
     const [search, setSearch] = useState<string>(""); //NEED STATE HERE FOR PROPER DATA PASSING FOR EVENT HANDELING FUNCTIONS BELOW
     
     //Array for portfolio values
-    const [portfolioValues, setPortfolioValues] = useState<string[]>([]); //Array of favorite stocks
+    const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([]); //Array of favorite stocks
     
     //State to store search results, stores in array
     const [searchResult, setSearchResult] = useState<CompanySearch[]>([])
@@ -29,27 +32,66 @@ const SearchPage = (props: Props) => {
         setSearch(e.target.value);
     };
 
+    //Need to have this so portfolio valuesare fetched on the render
+    useEffect(() => {
+      getPortfolio();
+    }, [])
+
+    //Get portfolio data function
+    const getPortfolio = () => {
+      portfolioGetAPI()
+      .then((res) => {
+        if (res?.data) {
+          setPortfolioValues(res?.data);
+        }
+      }).catch((e) => {
+        toast.warning("Could not get portfolio values!");
+      })
+    }
+
+
     const onPortfolioCreate = (e: any) => {
         //Add prevent default to stop a refresh from happening
         e.preventDefault();
-        const exists = portfolioValues.find((value) => value === e.target[0].value) //Checks to see if we already got something we were going to add in the spread data (which is why we would use index 0)
-        if (exists) return; //If the card already exists, stop here and don't add it
+        //const exists = portfolioValues.find((value) => value === e.target[0].value) //Checks to see if we already got something we were going to add in the spread data (which is why we would use index 0)
+        //if (exists) return; //If the card already exists, stop here and don't add it
 
         //console.log(e) TEST
         //Let's add to array of favorite stocks adds existing value and first value in the event from the form
         //Can't use syntheticEvent property for below stuff in updatePortfo, so we turn off the typescript by putting any as the property above instead of syntheticEvent
-        const updatedPortfolio = [...portfolioValues, e.target[0].value]
-        setPortfolioValues(updatedPortfolio); //Created the new array state
+        //const updatedPortfolio = [...portfolioValues, e.target[0].value]
+        //setPortfolioValues(updatedPortfolio); //Created the new array state
+
+        //NEW WAY TO DO IT WHICH IS BETTER
+        portfolioAddAPI(e.target[0].value)
+        .then((res) => {
+          if(res?.status === 204) {
+            toast.success("Stock added to portfolio!")
+            getPortfolio();
+          }
+        }).catch((e) => {
+          toast.warning("Could not create portfolio item!");
+        })
     }
 
     //Turn off the typescript for this one as adding it has it off to so we might have different types
     const onPortfolioDelete = (e: any) => {
       e.preventDefault();
+      portfolioDeleteAPI(e.target[0].value)
+      .then((res) => {
+        if(res?.status == 200) {
+          toast.success("Stock deleted from portfolio!");
+          getPortfolio();
+        }
+      })
+
+      /**
       const removed = portfolioValues.filter((value) => {
         //We will set removed to a new array where each value that should be added will not be equal to the one we want removed
         return value !== e.target[0].value; //Check if it's not a part of the actual value we'll get through our e
       });
       setPortfolioValues(removed);
+      */
     }
 
 
@@ -80,7 +122,7 @@ const SearchPage = (props: Props) => {
     <>
       {/**<Search onClick={onClick} search={search} handleChange={handleChange} />*/}
       <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange}/>
-      <ListPortfolio portfolioValues={portfolioValues} onPortfolioDelete={onPortfolioDelete}/>
+      <ListPortfolio portfolioValues={portfolioValues!} onPortfolioDelete={onPortfolioDelete}/>
       <CardList searchResults={searchResult} onPortfolioCreate={onPortfolioCreate}/> 
       {serverError && <h1>{serverError}</h1>}
     </>
