@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../Context/useAuth";
 import "./Navbar.css";
-import logo from "./logo1.png";
+import logo from "./logo.png";
 
 interface Props {}
 
